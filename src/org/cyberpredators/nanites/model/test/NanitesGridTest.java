@@ -55,10 +55,10 @@ public class NanitesGridTest {
 
 	@Test
 	public void testInit() {
-		sut = new NanitesGrid(width, height);
+		sut.initialize();
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < height; y++)
-			assertEquals(0, sut.getStateOf(x, y));
+			assertEquals(1, sut.getStateOf(x, y));
 	}
 
 	@Test

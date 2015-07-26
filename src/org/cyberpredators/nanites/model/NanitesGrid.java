@@ -30,10 +30,15 @@ public class NanitesGrid {
 	private final byte[] nanites;
 
 	public NanitesGrid(int width, int height) {
-		super();
 		this.width = width;
 		this.height = height;
 		this.nanites = new byte[(width + 2) * (height + 2)];
+	}
+
+	public void initialize() {
+		for (int x = 0; x < width; x++)
+			for (int y = 0; y < height; y++)
+				setStateOf(x, y, (byte) 1);
 	}
 
 	public int getWidth() {
