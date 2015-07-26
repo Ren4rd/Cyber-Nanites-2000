@@ -41,39 +41,40 @@ public class NanitesGridTest {
 	@Before
 	public void setUp() {
 		sut = new NanitesGrid(width, height);
-		sut.setStateOf(6, (byte) 1);
-		sut.setStateOf(7, (byte) 2);
-		sut.setStateOf(8, (byte) 3);
-		sut.setStateOf(11, (byte) 4);
-		sut.setStateOf(12, (byte) 5);
-		sut.setStateOf(13, (byte) 6);
-		sut.setStateOf(16, (byte) 7);
-		sut.setStateOf(17, (byte) 8);
-		sut.setStateOf(18, (byte) 9);
+		sut.setStateOf(0, 0, (byte) 1);
+		sut.setStateOf(1, 0, (byte) 2);
+		sut.setStateOf(2, 0, (byte) 3);
+		sut.setStateOf(0, 1, (byte) 4);
+		sut.setStateOf(1, 1, (byte) 5);
+		sut.setStateOf(2, 1, (byte) 6);
+		sut.setStateOf(0, 2, (byte) 7);
+		sut.setStateOf(1, 2, (byte) 8);
+		sut.setStateOf(2, 2, (byte) 9);
 		
 	}
 
 	@Test
 	public void testInit() {
 		sut = new NanitesGrid(width, height);
-		for (int i = 0; i < (width + 2) * (height + 2); i++)
-			assertEquals(0, sut.getStateOf(i));
+		for (int x = 0; x < width; x++)
+			for (int y = 0; y < height; y++)
+			assertEquals(0, sut.getStateOf(x, y));
 	}
 
 	@Test
 	public void testGetState() {
-		assertEquals((byte) 1, sut.getStateOf(6));
+		assertEquals((byte) 1, sut.getStateOf(0, 0));
 	}
 
 	@Test
 	public void testSetState() {
-		sut.setStateOf(18, (byte) 1);
-		assertEquals((byte) 1, sut.getStateOf(18));
+		sut.setStateOf(2, 2, (byte) 1);
+		assertEquals((byte) 1, sut.getStateOf(2, 2));
 	}
 
 	@Test
 	public void testGetNeighborhodd() {
-		List<Byte> neighbors  = sut.getNeighborhoodOf(12);
+		List<Byte> neighbors  = sut.getNeighborhoodOf(1, 1);
 		assertThat(neighbors.size(), is(8));
 		assertThat(neighbors, hasItem((byte) 1));
 		assertThat(neighbors, hasItem((byte) 2));

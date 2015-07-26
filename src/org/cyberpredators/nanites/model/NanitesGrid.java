@@ -44,18 +44,18 @@ public class NanitesGrid {
 		return height;
 	}
 
-	public byte getStateOf(int index) {
+	public byte getStateOf(int x, int y) {
+		int index = indexOfCoordinates(x, y);
 		return nanites[index];
 	}
 
-	public void setStateOf(int index, byte state) {
+	public void setStateOf(int x, int y, byte state) {
+		int index = indexOfCoordinates(x, y);
 		nanites[index] = state;
 	}
 
-	/**
-	 * Calling this with an index of a cell on the border will throw a IndexOutOfBoundsException
-	 */
-	public List<Byte> getNeighborhoodOf(int index) {
+	public List<Byte> getNeighborhoodOf(int x, int y) {
+		int index = indexOfCoordinates(x, y);
 		ArrayList<Byte> neighborhood = new ArrayList<Byte>(8);
 		neighborhood.add(nanites[index + 1]);
 		neighborhood.add(nanites[index + width + 3]);
@@ -66,5 +66,12 @@ public class NanitesGrid {
 		neighborhood.add(nanites[index - width - 2]);
 		neighborhood.add(nanites[index - width - 1]);
 		return neighborhood;
+	}
+
+	/**
+	 * @return the index corresponding to x (from left to right) and y (from top to bottom)
+	 */
+	private int indexOfCoordinates(int x, int y) {
+		return  1 + x + (width + 2) * (y + 1);
 	}
 }
