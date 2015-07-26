@@ -39,7 +39,7 @@ public class MaxNumberRule extends AbstractRule {
 		for (byte neighborState: neighborhood)
 			if (neighborState == neighborsRequiredState)
 				n++;
-			if (n >= maxNumber)
+			if (n > maxNumber)
 				return false;
 		return true;
 	}
