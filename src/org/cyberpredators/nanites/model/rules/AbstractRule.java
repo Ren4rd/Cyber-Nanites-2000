@@ -24,9 +24,9 @@ import java.util.List;
 
 public abstract class AbstractRule {
 
-	public final int newState;
+	public final byte newState;
 
-	public AbstractRule(int newState) {
+	public AbstractRule(byte newState) {
 		this.newState = newState;
 	}
 
