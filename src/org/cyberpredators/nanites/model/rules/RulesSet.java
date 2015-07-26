@@ -20,19 +20,24 @@ package org.cyberpredators.nanites.model.rules;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class RulesSet {
 
-	private final HashMap<Byte, ? extends List<AbstractRule>> rules;
-
-	public RulesSet(HashMap<Byte, ? extends List<AbstractRule>> rules) {
-		this.rules = rules;
-	}
+	private final HashMap<Byte, List<AbstractRule>> rules = new HashMap<Byte, List<AbstractRule>>();
 
 	public List<AbstractRule> getRulesOfState(byte state) {
 		return rules.get(state);
+	}
+
+	public void addRuleToState(byte state, AbstractRule rule) {
+		if (!rules.containsKey(state)) {
+			List<AbstractRule> stateRules = new ArrayList<AbstractRule>();
+			rules.put(state, stateRules);
+		}
+		rules.get(state).add(rule);
 	}
 	
 }
