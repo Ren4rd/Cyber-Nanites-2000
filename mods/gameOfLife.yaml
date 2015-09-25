@@ -1,0 +1,20 @@
+rules:
+ - # overCrowding
+   ifIs: living
+   minimum: 4
+   neighborState: living
+   thenBecome: dead
+
+ - # underPopulation
+   ifIs: living
+   maximum: 1
+   neighborState: living
+   thenBecome: dead
+
+ - # birth
+   ifIs: dead
+   number: 3
+   neighborState: living
+   thenBecome: living
+
+defaultState: dead
