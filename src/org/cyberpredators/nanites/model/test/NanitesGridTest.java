@@ -50,7 +50,6 @@ public class NanitesGridTest {
 		sut.setStateOf(0, 2, (byte) 7);
 		sut.setStateOf(1, 2, (byte) 8);
 		sut.setStateOf(2, 2, (byte) 9);
-		
 	}
 
 	@Test

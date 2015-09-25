@@ -1,7 +1,7 @@
 package org.cyberpredators.nanites.model;
 
 /*
- * Mod.java
+ * StateNameMap.java
  * Copyright (C) Remi Even 2015
  * 
  * This file is part of CyberNanites2000.
@@ -20,27 +20,37 @@ package org.cyberpredators.nanites.model;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import org.cyberpredators.nanites.model.rules.RulesSet;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Mod {
+public class StateNameMap {
 
-	private final RulesSet rules;
-	private final StateNameMap stateNames;
+	private final Map<Byte, String> stateNames;
+	private byte lastState;
 
-	public Mod(RulesSet rules, StateNameMap stateNames) {
-		this.rules = rules;
-		this.stateNames = stateNames;
+	public StateNameMap() {
+		stateNames = new HashMap<Byte, String>();
+		lastState = 1;
 	}
 
-	public RulesSet getRules() {
-		return rules;
+	public void setDefaultStateName(String name) {
+		stateNames.put((byte) 1, name);
 	}
 
-	public String getNameOfState(Byte state) {
-		return stateNames.getNameOfState(state);
+	public String getNameOfState(byte state) {
+		return stateNames.get(state);
+	}
+
+	public void addIfNotPresent(String stateName) {
+		if (!stateNames.containsValue(stateName))
+			add(stateName);
+	}
+
+	private void add(String stateName) {
+		stateNames.put(++lastState, stateName);
 	}
 
 	public int getNumberOfStates() {
-		return stateNames.getNumberOfStates();
+		return stateNames.size();
 	}
 }
