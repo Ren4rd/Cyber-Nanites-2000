@@ -22,32 +22,40 @@ package org.cyberpredators.nanites.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class StateNameMap {
 
-	private final Map<Byte, String> stateNames;
+	private final Map<String, Byte> stateNames;
 	private byte lastState;
 
 	public StateNameMap() {
-		stateNames = new HashMap<Byte, String>();
+		stateNames = new HashMap<String, Byte>();
 		lastState = 1;
 	}
 
 	public void setDefaultStateName(String name) {
-		stateNames.put((byte) 1, name);
+		stateNames.put(name, (byte) 1);
 	}
 
 	public String getNameOfState(byte state) {
-		return stateNames.get(state);
+		for (Entry<String, Byte> entry : stateNames.entrySet())
+			if (entry.getValue() == state)
+				return entry.getKey();
+		return null;
 	}
 
 	public void addIfNotPresent(String stateName) {
-		if (!stateNames.containsValue(stateName))
+		if (!stateNames.containsKey(stateName))
 			add(stateName);
 	}
 
 	private void add(String stateName) {
-		stateNames.put(++lastState, stateName);
+		stateNames.put(stateName, ++lastState);
+	}
+
+	public byte getStateOfName(String name) {
+		return stateNames.get(name);
 	}
 
 	public int getNumberOfStates() {

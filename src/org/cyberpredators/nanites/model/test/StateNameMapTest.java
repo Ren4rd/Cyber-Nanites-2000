@@ -59,4 +59,10 @@ public class StateNameMapTest {
 		sut.addIfNotPresent("living");
 		assertThat(sut.getNumberOfStates(), is(2));
 	}
+
+	@Test
+	public void testGetStateOfName() {
+		assertThat(sut.getStateOfName("dead"), is((byte) 1));
+		assertThat(sut.getStateOfName("living"), is((byte) 2));
+	}
 }
