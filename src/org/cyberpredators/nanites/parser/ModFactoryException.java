@@ -1,7 +1,7 @@
 package org.cyberpredators.nanites.parser;
 
 /*
- * YamlParser.java
+ * ModFactoryException.java
  * Copyright (C) Remi Even 2015
  * 
  * This file is part of CyberNanites2000.
@@ -20,17 +20,16 @@ package org.cyberpredators.nanites.parser;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.io.Reader;
-import java.util.Map;
+@SuppressWarnings("serial")
+public class ModFactoryException extends Exception {
 
-import com.esotericsoftware.yamlbeans.YamlException;
-import com.esotericsoftware.yamlbeans.YamlReader;
+	private final String message;
 
-public class YamlParser {
+	public ModFactoryException(String message) {
+		this.message = message;
+	}
 
-	@SuppressWarnings("unchecked")
-	public static YamlAdapter parse(Reader sourceReader) throws YamlException {
-		YamlReader reader = new YamlReader(sourceReader);
-		return new YamlAdapter((Map<? extends String, ?>) reader.read());
+	public String getMessage() {
+		return message;
 	}
 }

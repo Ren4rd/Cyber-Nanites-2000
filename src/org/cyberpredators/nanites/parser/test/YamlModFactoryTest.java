@@ -23,6 +23,7 @@ package org.cyberpredators.nanites.parser.test;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -32,6 +33,7 @@ import org.cyberpredators.nanites.model.Mod;
 import org.cyberpredators.nanites.model.rules.MaxNumberRule;
 import org.cyberpredators.nanites.model.rules.MinNumberRule;
 import org.cyberpredators.nanites.model.rules.NumberRule;
+import org.cyberpredators.nanites.parser.ModFactoryException;
 import org.cyberpredators.nanites.parser.YamlModFactory;
 import org.cyberpredators.nanites.parser.YamlParser;
 import org.junit.Before;
@@ -71,6 +73,9 @@ public class YamlModFactoryTest {
 		try (Reader sourceReader = new StringReader(yamlGameOfLifeMod)) {
 			parsedMod = YamlModFactory.createMod(YamlParser.parse(sourceReader));			
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ModFactoryException e) {
+			fail("A mod factory exception occured");
 			e.printStackTrace();
 		}
 	}
