@@ -24,7 +24,9 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.cyberpredators.nanites.parser.ModFactoryException;
@@ -48,6 +50,13 @@ public class YamlAdapterTest {
 		Map<String, Object> nestedBareYaml = new HashMap<String, Object>();
 		nestedBareYaml.put("nestedStringKey", "nestedStringValue");
 		bareYaml.put("nestedKey", nestedBareYaml);
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		for (int i = 0; i < 3; i++) {
+			Map<String, Object> value = new HashMap<String, Object>();
+			value.put("int", Integer.toString(i));
+			list.add(value);
+		}
+		bareYaml.put("listKey", list);
 		sut = new YamlAdapter(bareYaml);
 	}
 
@@ -75,6 +84,13 @@ public class YamlAdapterTest {
 	public void testGetYaml() throws ModFactoryException {
 		YamlAdapter nestedYaml = sut.getYamlOrThrow("nestedKey", "Key does not exist");
 		assertThat(nestedYaml.getStringOrThrow("nestedStringKey", "Key does not exist"), is("nestedStringValue"));
+	}
+
+	@Test
+	public void testGetListYaml() throws ModFactoryException {
+		List<YamlAdapter> list = sut.getListYamlOrThrow("listKey", "Key does not exist");
+		assertThat(list.size(), is(3));
+		assertThat(list.get(2).getIntOrThrow("int", "Key does not exist"), is (2));
 	}
 
 	@Test

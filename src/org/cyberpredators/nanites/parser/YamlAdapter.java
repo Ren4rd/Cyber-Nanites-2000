@@ -20,6 +20,8 @@ package org.cyberpredators.nanites.parser;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class YamlAdapter {
@@ -47,5 +49,16 @@ public class YamlAdapter {
 		if (!yaml.containsKey(key))
 			throw new ModFactoryException(exceptionMessage);
 		return new YamlAdapter((Map<? extends String, ?>) yaml.get(key));
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<YamlAdapter> getListYamlOrThrow(String key, String exceptionMessage) throws ModFactoryException {
+		if (!yaml.containsKey(key))
+			throw new ModFactoryException(exceptionMessage);
+		ArrayList<YamlAdapter> result = new ArrayList<YamlAdapter>();
+		((List<Map<? extends String, ?>>) yaml.get(key)).forEach(value -> {
+			result.add(new YamlAdapter(value));
+		});
+		return result;
 	}
 }
