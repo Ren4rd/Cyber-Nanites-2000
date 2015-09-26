@@ -29,8 +29,8 @@ import com.esotericsoftware.yamlbeans.YamlReader;
 public class YamlParser {
 
 	@SuppressWarnings("unchecked")
-	public static Map<? extends String, ?> parse(Reader sourceReader) throws YamlException {
+	public static YamlAdapter parse(Reader sourceReader) throws YamlException {
 		YamlReader reader = new YamlReader(sourceReader);
-		return (Map<? extends String, ?>) reader.read();
+		return new YamlAdapter((Map<? extends String, ?>) reader.read());
 	}
 }
