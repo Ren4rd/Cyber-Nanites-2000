@@ -61,4 +61,8 @@ public class YamlAdapter {
 		});
 		return result;
 	}
+
+	public boolean containsKey(String key) {
+		return yaml.containsKey(key);
+	}
 }

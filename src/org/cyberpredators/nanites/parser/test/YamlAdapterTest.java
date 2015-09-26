@@ -113,4 +113,10 @@ public class YamlAdapterTest {
 		exception.expectMessage("Key does not exist");
 		sut.getYamlOrThrow("missingKey", "Key does not exist");
 	}
+
+	@Test
+	public void testContainsKey() {
+		assertThat(sut.containsKey("stringKey"), is(true));
+		assertThat(sut.containsKey("missingKey"), is(false));
+	}
 }
