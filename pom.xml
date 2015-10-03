@@ -4,6 +4,7 @@
   <artifactId>Cyber-Nanites-2000</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
+    <testSourceDirectory>src</testSourceDirectory>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
