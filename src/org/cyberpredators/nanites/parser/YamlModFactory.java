@@ -21,7 +21,6 @@ package org.cyberpredators.nanites.parser;
  */
 
 import java.util.List;
-import java.util.Map;
 
 import org.cyberpredators.nanites.model.Mod;
 import org.cyberpredators.nanites.model.StateNameMap;
@@ -41,7 +40,6 @@ public class YamlModFactory {
 		stateNames.setDefaultStateName(defaultStateName);
 
 		for (int i = 0; i < yamlRules.size(); i++) {
-			@SuppressWarnings("unchecked")
 			YamlAdapter yamlRule = yamlRules.get(i);
 			String cellStateName = yamlRule.getStringOrThrow("ifIs", "Cell state not found in rule " + i);
 			stateNames.addIfNotPresent(cellStateName);
