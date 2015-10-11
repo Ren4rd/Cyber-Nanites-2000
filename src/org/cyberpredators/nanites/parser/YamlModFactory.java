@@ -25,8 +25,10 @@ import java.util.List;
 import org.cyberpredators.nanites.model.Mod;
 import org.cyberpredators.nanites.model.StateNameMap;
 import org.cyberpredators.nanites.model.rules.AbstractRule;
-import org.cyberpredators.nanites.model.rules.MaxNumberRule;
-import org.cyberpredators.nanites.model.rules.MinNumberRule;
+import org.cyberpredators.nanites.model.rules.HighMaxNumberRule;
+import org.cyberpredators.nanites.model.rules.HighMinNumberRule;
+import org.cyberpredators.nanites.model.rules.LowMaxNumberRule;
+import org.cyberpredators.nanites.model.rules.LowMinNumberRule;
 import org.cyberpredators.nanites.model.rules.NumberRule;
 import org.cyberpredators.nanites.model.rules.RulesSet;
 
@@ -60,22 +62,28 @@ public class YamlModFactory {
 		throw new ModFactoryException("Unknown type of rule, or incomplete rule");
 	}
 
-	private static MinNumberRule createMinNumberRule(YamlAdapter yamlRule, StateNameMap stateNames) throws ModFactoryException {
+	private static AbstractRule createMinNumberRule(YamlAdapter yamlRule, StateNameMap stateNames) throws ModFactoryException {
 		int minimum = yamlRule.getIntOrThrow("minimum", "No minimum value found");
 		byte newState = stateNames.getStateOfName(yamlRule.getStringOrThrow("thenBecome", "New cell state not found"));
 		String neighborStateName = yamlRule.getStringOrThrow("neighborState", "Neighborhood cell state not found");
 		stateNames.addIfNotPresent(neighborStateName);
 		byte neighborState = stateNames.getStateOfName(neighborStateName);
-		return new MinNumberRule(newState, neighborState, minimum);
+		if (minimum <= 4)
+			return new LowMinNumberRule(newState, neighborState, minimum);
+		else
+			return new HighMinNumberRule(newState, neighborState, minimum);
 	}
 
-	private static MaxNumberRule createMaxNumberRule(YamlAdapter yamlRule, StateNameMap stateNames) throws ModFactoryException {
+	private static AbstractRule createMaxNumberRule(YamlAdapter yamlRule, StateNameMap stateNames) throws ModFactoryException {
 		int maximum = yamlRule.getIntOrThrow("maximum", "No maximum value found");
 		byte newState = stateNames.getStateOfName(yamlRule.getStringOrThrow("thenBecome", "New cell state not found"));
 		String neighborStateName = yamlRule.getStringOrThrow("neighborState", "Neighborhood cell state not found");
 		stateNames.addIfNotPresent(neighborStateName);
 		byte neighborState = stateNames.getStateOfName(neighborStateName);
-		return new MaxNumberRule(newState, neighborState, maximum);
+		if (maximum <= 4)
+			return new LowMaxNumberRule(newState, neighborState, maximum);
+		else
+			return new HighMaxNumberRule(newState, neighborState, maximum);
 	}
 
 	private static NumberRule createNumberRule(YamlAdapter yamlRule, StateNameMap stateNames) throws ModFactoryException {

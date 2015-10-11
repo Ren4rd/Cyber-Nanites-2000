@@ -30,8 +30,8 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.cyberpredators.nanites.model.Mod;
-import org.cyberpredators.nanites.model.rules.MaxNumberRule;
-import org.cyberpredators.nanites.model.rules.MinNumberRule;
+import org.cyberpredators.nanites.model.rules.LowMaxNumberRule;
+import org.cyberpredators.nanites.model.rules.LowMinNumberRule;
 import org.cyberpredators.nanites.model.rules.NumberRule;
 import org.cyberpredators.nanites.parser.ModFactoryException;
 import org.cyberpredators.nanites.parser.YamlModFactory;
@@ -104,8 +104,8 @@ public class YamlModFactoryTest {
 	@Test
 	public void testTypeOfRules() {
 		assertThat(parsedMod.getRules().getRulesOfState((byte) 1).get(0) instanceof NumberRule, is(true));
-		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(0) instanceof MinNumberRule, is(true));
-		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(1) instanceof MaxNumberRule, is(true));
+		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(0) instanceof LowMinNumberRule, is(true));
+		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(1) instanceof LowMaxNumberRule, is(true));
 	}
 }
 
