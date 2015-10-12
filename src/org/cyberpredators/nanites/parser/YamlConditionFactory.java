@@ -20,8 +20,12 @@ package org.cyberpredators.nanites.parser;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.cyberpredators.nanites.model.StateNameMap;
 import org.cyberpredators.nanites.model.rules.Condition;
+import org.cyberpredators.nanites.model.rules.Conjonction;
 import org.cyberpredators.nanites.model.rules.HighMaxCondition;
 import org.cyberpredators.nanites.model.rules.HighMinCondition;
 import org.cyberpredators.nanites.model.rules.LowMaxCondition;
@@ -37,6 +41,8 @@ public class YamlConditionFactory {
 			return createMaxCondition(yamlCondition, stateNames);
 		if (yamlCondition.containsKey("number"))
 			return createNumberCondition(yamlCondition, stateNames);
+		if (yamlCondition.containsKey("verifiesAll"))
+			return createConjonction(yamlCondition, stateNames);
 		else
 			throw new ModFactoryException("Unknown type of condition");
 	}
@@ -69,5 +75,12 @@ public class YamlConditionFactory {
 		stateNames.addIfNotPresent(neighborStateName);
 		byte neighborState = stateNames.getStateOfName(neighborStateName);
 		return new NumberCondition(neighborState, number);
+	}
+
+	private static Condition createConjonction(YamlAdapter yamlCondition, StateNameMap stateNames) throws ModFactoryException {
+		List<Condition> conditions = new ArrayList<>();
+		for (YamlAdapter yamlSubCondition : yamlCondition.getListYamlOrThrow("verifiesAll", "No subcondition found in conjonction"))
+			conditions.add(createCondition(yamlSubCondition, stateNames));
+		return new Conjonction(conditions);
 	}
 }
