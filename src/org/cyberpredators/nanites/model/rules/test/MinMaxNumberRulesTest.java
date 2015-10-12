@@ -23,7 +23,6 @@ package org.cyberpredators.nanites.model.rules.test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.cyberpredators.nanites.model.rules.AbstractRule;
@@ -35,34 +34,8 @@ import org.junit.Test;
 
 public class MinMaxNumberRulesTest {
 
-	private final static List<Byte> manyLivingNeighbors = createManyLivingNeighbors();
-	private final static List<Byte> fewLivingNeighbors = createFewLivingNeighbors();
-
-	private static List<Byte> createManyLivingNeighbors() {
-		List<Byte> neighbors = new ArrayList<>();
-		neighbors.add((byte) 1);
-		neighbors.add((byte) 1);
-		neighbors.add((byte) 1);
-		neighbors.add((byte) 2);
-		neighbors.add((byte) 2);
-		neighbors.add((byte) 2);
-		neighbors.add((byte) 2);
-		neighbors.add((byte) 2);
-		return neighbors;
-	}
-
-	private static List<Byte> createFewLivingNeighbors() {
-		List<Byte> neighbors = new ArrayList<>();
-		neighbors.add((byte) 1);
-		neighbors.add((byte) 1);
-		neighbors.add((byte) 1);
-		neighbors.add((byte) 1);
-		neighbors.add((byte) 1);
-		neighbors.add((byte) 2);
-		neighbors.add((byte) 2);
-		neighbors.add((byte) 2);
-		return neighbors;
-	}
+	private final static List<Byte> manyLivingNeighbors = NeighborhoodFactory.create(1, 1, 1, 2, 2, 2, 2, 2);
+	private final static List<Byte> fewLivingNeighbors = NeighborhoodFactory.create(1, 1, 1, 1, 1, 2, 2, 2);
 
 	@Test
 	public void testHighMaxNumberRule() {
