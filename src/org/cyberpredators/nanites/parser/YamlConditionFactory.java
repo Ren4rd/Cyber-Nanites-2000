@@ -44,7 +44,7 @@ public class YamlConditionFactory {
 		if (yamlCondition.containsKey("verifiesAll"))
 			return createConjonction(yamlCondition, stateNames);
 		else
-			throw new ModFactoryException("Unknown type of condition");
+			return createTrue();
 	}
 
 	private static Condition createMinCondition(YamlAdapter yamlCondition, StateNameMap stateNames) throws ModFactoryException {
@@ -82,5 +82,14 @@ public class YamlConditionFactory {
 		for (YamlAdapter yamlSubCondition : yamlCondition.getListYamlOrThrow("verifiesAll", "No subcondition found in conjonction"))
 			conditions.add(createCondition(yamlSubCondition, stateNames));
 		return new Conjonction(conditions);
+	}
+
+	private static Condition createTrue() {
+		return new Condition() {
+			@Override
+			public boolean verifiedIn(List<Byte> neighborhood) {
+				return true;
+			}
+		};
 	}
 }
