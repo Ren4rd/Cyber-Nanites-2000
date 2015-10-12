@@ -1,7 +1,7 @@
 package org.cyberpredators.nanites.model.rules;
 
 /*
- * LowMinNumberRule.java
+ * Condition.java
  * Copyright (C) Remi Even 2015
  * 
  * This file is part of CyberNanites2000.
@@ -22,26 +22,6 @@ package org.cyberpredators.nanites.model.rules;
 
 import java.util.List;
 
-public class LowMinNumberRule extends AbstractRule {
-
-	private final byte neighborsRequiredState;
-	private final int requiredNumber;
-
-	public LowMinNumberRule(byte newState, byte neighborsRequiredState, int requiredNumber) {
-		super(newState);
-		this.neighborsRequiredState = neighborsRequiredState;
-		this.requiredNumber = requiredNumber;
-	}
-
-	@Override
-	public boolean canBeApplied(List<Byte> neighborhood) {
-		int n = 0;
-		for (byte neighborState: neighborhood) {
-			if (neighborState == neighborsRequiredState)
-				n++;
-			if (n >= requiredNumber)
-				return true;
-		}
-		return false;
-	}
+public interface Condition {
+	public boolean verifiedIn(List<Byte> neighborhood);
 }

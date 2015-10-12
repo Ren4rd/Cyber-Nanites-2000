@@ -1,7 +1,7 @@
 package org.cyberpredators.nanites.model.rules;
 
 /*
- * NumberRule.java
+ * Conjonction.java
  * Copyright (C) Remi Even 2015
  * 
  * This file is part of CyberNanites2000.
@@ -22,23 +22,19 @@ package org.cyberpredators.nanites.model.rules;
 
 import java.util.List;
 
-public class NumberRule extends AbstractRule {
+public class Conjonction implements Condition {
 
-	private final byte neighborsRequiredState;
-	private final int requiredNumber;
+	private final List<Condition> conditions;
 
-	public NumberRule(byte newState, byte neighborsRequiredState, int requiredNumber) {
-		super(newState);
-		this.neighborsRequiredState = neighborsRequiredState;
-		this.requiredNumber = requiredNumber;
+	public Conjonction(List<Condition> conditions) {
+		this.conditions = conditions;
 	}
 
 	@Override
-	public boolean canBeApplied(List<Byte> neighborhood) {
-		int n = 0;
-		for (byte neighborState: neighborhood)
-			if (neighborState == neighborsRequiredState)
-				n++;
-		return n == requiredNumber;
+	public boolean verifiedIn(List<Byte> neighborhood) {
+		for(Condition condition : conditions)
+			if (!condition.verifiedIn(neighborhood))
+				return false;
+		return true;
 	}
 }

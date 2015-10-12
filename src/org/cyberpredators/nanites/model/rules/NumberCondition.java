@@ -1,7 +1,7 @@
 package org.cyberpredators.nanites.model.rules;
 
 /*
- * HighMaxNumberRule.java
+ * NumberCondition.java
  * Copyright (C) Remi Even 2015
  * 
  * This file is part of CyberNanites2000.
@@ -22,26 +22,22 @@ package org.cyberpredators.nanites.model.rules;
 
 import java.util.List;
 
-public class HighMaxNumberRule extends AbstractRule {
+public class NumberCondition implements Condition {
 
 	private final byte neighborsRequiredState;
-	private final int maxNumber;
+	private final int requiredNumber;
 
-	public HighMaxNumberRule(byte newState, byte neighborsRequiredState, int maxNumber) {
-		super(newState);
+	public NumberCondition(byte neighborsRequiredState, int requiredNumber) {
 		this.neighborsRequiredState = neighborsRequiredState;
-		this.maxNumber = maxNumber;
+		this.requiredNumber = requiredNumber;
 	}
 
 	@Override
-	public boolean canBeApplied(List<Byte> neighborhood) {
-		int n = 8;
-		for (byte neighborState: neighborhood) {
-			if (neighborState != neighborsRequiredState)
-				n--;
-			if (n == maxNumber)
-				return true;
-		}
-		return false;
+	public boolean verifiedIn(List<Byte> neighborhood) {
+		int n = 0;
+		for (byte neighborState: neighborhood)
+			if (neighborState == neighborsRequiredState)
+				n++;
+		return n == requiredNumber;
 	}
 }

@@ -1,7 +1,7 @@
 package org.cyberpredators.nanites.model.rules.test;
 
 /*
- * MinMaxNumberRulesTest.java
+ * MinMaxConditionTest.java
  * Copyright (C) Remi Even 2015
  * 
  * This file is part of CyberNanites2000.
@@ -25,43 +25,43 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import org.cyberpredators.nanites.model.rules.AbstractRule;
-import org.cyberpredators.nanites.model.rules.HighMaxNumberRule;
-import org.cyberpredators.nanites.model.rules.HighMinNumberRule;
-import org.cyberpredators.nanites.model.rules.LowMaxNumberRule;
-import org.cyberpredators.nanites.model.rules.LowMinNumberRule;
+import org.cyberpredators.nanites.model.rules.Condition;
+import org.cyberpredators.nanites.model.rules.HighMaxCondition;
+import org.cyberpredators.nanites.model.rules.HighMinCondition;
+import org.cyberpredators.nanites.model.rules.LowMaxCondition;
+import org.cyberpredators.nanites.model.rules.LowMinCondition;
 import org.junit.Test;
 
-public class MinMaxNumberRulesTest {
+public class MinMaxConditionTest {
 
 	private final static List<Byte> manyLivingNeighbors = NeighborhoodFactory.create(1, 1, 1, 2, 2, 2, 2, 2);
 	private final static List<Byte> fewLivingNeighbors = NeighborhoodFactory.create(1, 1, 1, 1, 1, 2, 2, 2);
 
 	@Test
 	public void testHighMaxNumberRule() {
-		AbstractRule rule = new HighMaxNumberRule((byte) 1, (byte) 2, 4);
-		assertThat(rule.canBeApplied(manyLivingNeighbors), is(false));
-		assertThat(rule.canBeApplied(fewLivingNeighbors), is(true));
+		Condition condition = new HighMaxCondition((byte) 2, 4);
+		assertThat(condition.verifiedIn(manyLivingNeighbors), is(false));
+		assertThat(condition.verifiedIn(fewLivingNeighbors), is(true));
 	}
 
 	@Test
 	public void testLowMaxNumberRule() {
-		AbstractRule rule = new LowMaxNumberRule((byte) 1, (byte) 2, 4);
-		assertThat(rule.canBeApplied(manyLivingNeighbors), is(false));
-		assertThat(rule.canBeApplied(fewLivingNeighbors), is(true));
+		Condition condition = new LowMaxCondition((byte) 2, 4);
+		assertThat(condition.verifiedIn(manyLivingNeighbors), is(false));
+		assertThat(condition.verifiedIn(fewLivingNeighbors), is(true));
 	}
 
 	@Test
 	public void testHighMinNumberRule() {
-		AbstractRule rule = new HighMinNumberRule((byte) 1, (byte) 2, 4);
-		assertThat(rule.canBeApplied(manyLivingNeighbors), is(true));
-		assertThat(rule.canBeApplied(fewLivingNeighbors), is(false));
+		Condition condition = new HighMinCondition((byte) 2, 4);
+		assertThat(condition.verifiedIn(manyLivingNeighbors), is(true));
+		assertThat(condition.verifiedIn(fewLivingNeighbors), is(false));
 	}
 
 	@Test
 	public void testLowMinNumberRule() {
-		AbstractRule rule = new LowMinNumberRule((byte) 1, (byte) 2, 4);
-		assertThat(rule.canBeApplied(manyLivingNeighbors), is(true));
-		assertThat(rule.canBeApplied(fewLivingNeighbors), is(false));
+		Condition condition = new LowMinCondition((byte) 2, 4);
+		assertThat(condition.verifiedIn(manyLivingNeighbors), is(true));
+		assertThat(condition.verifiedIn(fewLivingNeighbors), is(false));
 	}
 }

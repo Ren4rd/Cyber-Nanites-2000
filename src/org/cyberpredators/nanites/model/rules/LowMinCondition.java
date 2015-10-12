@@ -1,7 +1,7 @@
 package org.cyberpredators.nanites.model.rules;
 
 /*
- * RulesSet.java
+ * LowMinCondition.java
  * Copyright (C) Remi Even 2015
  * 
  * This file is part of CyberNanites2000.
@@ -20,24 +20,27 @@ package org.cyberpredators.nanites.model.rules;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class RulesSet {
+public class LowMinCondition implements Condition {
 
-	private final HashMap<Byte, List<Rule>> rules = new HashMap<>();
+	private final byte neighborsRequiredState;
+	private final int requiredNumber;
 
-	public List<Rule> getRulesOfState(byte state) {
-		return rules.get(state);
+	public LowMinCondition(byte neighborsRequiredState, int requiredNumber) {
+		this.neighborsRequiredState = neighborsRequiredState;
+		this.requiredNumber = requiredNumber;
 	}
 
-	public void addRuleToState(byte state, Rule rule) {
-		if (!rules.containsKey(state)) {
-			List<Rule> stateRules = new ArrayList<>();
-			rules.put(state, stateRules);
+	@Override
+	public boolean verifiedIn(List<Byte> neighborhood) {
+		int n = 0;
+		for (byte neighborState: neighborhood) {
+			if (neighborState == neighborsRequiredState)
+				n++;
+			if (n >= requiredNumber)
+				return true;
 		}
-		rules.get(state).add(rule);
+		return false;
 	}
-	
 }

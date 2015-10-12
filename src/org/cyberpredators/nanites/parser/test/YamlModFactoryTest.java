@@ -30,9 +30,9 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.cyberpredators.nanites.model.Mod;
-import org.cyberpredators.nanites.model.rules.LowMaxNumberRule;
-import org.cyberpredators.nanites.model.rules.LowMinNumberRule;
-import org.cyberpredators.nanites.model.rules.NumberRule;
+import org.cyberpredators.nanites.model.rules.LowMaxCondition;
+import org.cyberpredators.nanites.model.rules.LowMinCondition;
+import org.cyberpredators.nanites.model.rules.NumberCondition;
 import org.cyberpredators.nanites.parser.ModFactoryException;
 import org.cyberpredators.nanites.parser.YamlModFactory;
 import org.cyberpredators.nanites.parser.YamlParser;
@@ -103,9 +103,9 @@ public class YamlModFactoryTest {
 
 	@Test
 	public void testTypeOfRules() {
-		assertThat(parsedMod.getRules().getRulesOfState((byte) 1).get(0) instanceof NumberRule, is(true));
-		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(0) instanceof LowMinNumberRule, is(true));
-		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(1) instanceof LowMaxNumberRule, is(true));
+		assertThat(parsedMod.getRules().getRulesOfState((byte) 1).get(0).condition instanceof NumberCondition, is(true));
+		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(0).condition instanceof LowMinCondition, is(true));
+		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(1).condition instanceof LowMaxCondition, is(true));
 	}
 }
 

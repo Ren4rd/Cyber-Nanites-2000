@@ -22,7 +22,7 @@ package org.cyberpredators.nanites.model;
 
 import java.util.List;
 
-import org.cyberpredators.nanites.model.rules.AbstractRule;
+import org.cyberpredators.nanites.model.rules.Rule;
 import org.cyberpredators.nanites.model.rules.RulesSet;
 
 public class RulesApplier {
@@ -42,11 +42,11 @@ public class RulesApplier {
 	}
 
 	private void applyRulesToNanite(NanitesGrid currentGrid, NanitesGrid bufferGrid, int x, int y) {
-		List<AbstractRule> rulesForState = rules.getRulesOfState(currentGrid.getStateOf(x, y));
+		List<Rule> rulesForState = rules.getRulesOfState(currentGrid.getStateOf(x, y));
 		bufferGrid.setStateOf(x, y, currentGrid.getStateOf(x, y));
 		if (rulesForState == null)
 			return;
-		for (AbstractRule rule: rulesForState)
+		for (Rule rule: rulesForState)
 			if (rule.canBeApplied(currentGrid.getNeighborhoodOf(x, y))) {
 				bufferGrid.setStateOf(x, y, rule.newState);
 				return;

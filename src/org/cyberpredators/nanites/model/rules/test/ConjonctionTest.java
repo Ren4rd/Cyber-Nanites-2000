@@ -1,7 +1,7 @@
 package org.cyberpredators.nanites.model.rules.test;
 
 /*
- * ConjonctionOfRulesTest.java
+ * ConjonctionTest.java
  * Copyright (C) Remi Even 2015
  * 
  * This file is part of CyberNanites2000.
@@ -26,43 +26,43 @@ import static org.junit.Assert.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.cyberpredators.nanites.model.rules.AbstractRule;
-import org.cyberpredators.nanites.model.rules.ConjonctionOfRules;
-import org.cyberpredators.nanites.model.rules.HighMaxNumberRule;
-import org.cyberpredators.nanites.model.rules.LowMinNumberRule;
+import org.cyberpredators.nanites.model.rules.Condition;
+import org.cyberpredators.nanites.model.rules.Conjonction;
+import org.cyberpredators.nanites.model.rules.HighMaxCondition;
+import org.cyberpredators.nanites.model.rules.LowMinCondition;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ConjonctionRuleTest {
+public class ConjonctionTest {
 
 	private final static List<Byte> enoughLivingNeighbors = NeighborhoodFactory.create(1, 1, 1, 1, 2, 2, 2, 2);
 	private final static List<Byte> tooManyLivingNeighbors = NeighborhoodFactory.create(2, 2, 2, 2, 2, 2, 2, 2);
 	private final static List<Byte> notEnoughLivingNeighbors = NeighborhoodFactory.create(1, 1, 1, 1, 1, 1, 1, 2);
 
-	private ConjonctionOfRules sut;
+	private Conjonction sut;
 
 	@Before
 	public void setUp() {
-		AbstractRule firstRule = new LowMinNumberRule((byte) 1, (byte) 2, 2);
-		AbstractRule secondRule = new HighMaxNumberRule((byte) 1, (byte) 2, 6);
-		List<AbstractRule> rules = new ArrayList<>();
-		rules.add(firstRule);
-		rules.add(secondRule);
-		sut = new ConjonctionOfRules((byte) 1, rules);
+		Condition firstCondition = new LowMinCondition((byte) 2, 2);
+		Condition secondCondition = new HighMaxCondition((byte) 2, 6);
+		List<Condition> rules = new ArrayList<>();
+		rules.add(firstCondition);
+		rules.add(secondCondition);
+		sut = new Conjonction(rules);
 	}
 
 	@Test
 	public void testAllSubRulesVerified() {
-		assertThat(sut.canBeApplied(enoughLivingNeighbors), is(true));
+		assertThat(sut.verifiedIn(enoughLivingNeighbors), is(true));
 	}
 
 	@Test
 	public void testOnlyFirstSubRuleVerified() {
-		assertThat(sut.canBeApplied(tooManyLivingNeighbors), is(false));
+		assertThat(sut.verifiedIn(tooManyLivingNeighbors), is(false));
 	}
 
 	@Test
 	public void testOnlySecondSubRuleVerified() {
-		assertThat(sut.canBeApplied(notEnoughLivingNeighbors), is(false));
+		assertThat(sut.verifiedIn(notEnoughLivingNeighbors), is(false));
 	}
 }

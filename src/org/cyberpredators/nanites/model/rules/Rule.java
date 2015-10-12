@@ -1,7 +1,7 @@
 package org.cyberpredators.nanites.model.rules;
 
 /*
- * HighMinNumberRule.java
+ * Rule.java
  * Copyright (C) Remi Even 2015
  * 
  * This file is part of CyberNanites2000.
@@ -22,26 +22,18 @@ package org.cyberpredators.nanites.model.rules;
 
 import java.util.List;
 
-public class HighMinNumberRule extends AbstractRule {
+public class Rule {
 
-	private final byte neighborsRequiredState;
-	private final int requiredNumber;
+	public final byte newState;
+	public final Condition condition;
 
-	public HighMinNumberRule(byte newState, byte neighborsRequiredState, int requiredNumber) {
-		super(newState);
-		this.neighborsRequiredState = neighborsRequiredState;
-		this.requiredNumber = requiredNumber;
+	public Rule(byte newState, Condition condition) {
+		this.newState = newState;
+		this.condition = condition;
 	}
 
-	@Override
 	public boolean canBeApplied(List<Byte> neighborhood) {
-		int n = 8;
-		for (byte neighborState: neighborhood) {
-			if (neighborState != neighborsRequiredState)
-				n--;
-			if (n < requiredNumber)
-				return false;
-		}
-		return true;
+		return condition.verifiedIn(neighborhood);
 	}
+
 }

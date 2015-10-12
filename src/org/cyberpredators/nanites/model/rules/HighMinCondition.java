@@ -1,7 +1,7 @@
 package org.cyberpredators.nanites.model.rules;
 
 /*
- * ConjonctionOfRules.java
+ * HighMinCondition.java
  * Copyright (C) Remi Even 2015
  * 
  * This file is part of CyberNanites2000.
@@ -22,20 +22,25 @@ package org.cyberpredators.nanites.model.rules;
 
 import java.util.List;
 
-public class ConjonctionOfRules extends AbstractRule {
+public class HighMinCondition implements Condition {
 
-	private final List<AbstractRule> rules;
+	private final byte neighborsRequiredState;
+	private final int requiredNumber;
 
-	public ConjonctionOfRules(byte newState, List<AbstractRule>rules) {
-		super(newState);
-		this.rules = rules;
+	public HighMinCondition(byte neighborsRequiredState, int requiredNumber) {
+		this.neighborsRequiredState = neighborsRequiredState;
+		this.requiredNumber = requiredNumber;
 	}
 
 	@Override
-	public boolean canBeApplied(List<Byte> neighborhood) {
-		for(AbstractRule rule : rules)
-			if (!rule.canBeApplied(neighborhood))
+	public boolean verifiedIn(List<Byte> neighborhood) {
+		int n = 8;
+		for (byte neighborState: neighborhood) {
+			if (neighborState != neighborsRequiredState)
+				n--;
+			if (n < requiredNumber)
 				return false;
+		}
 		return true;
 	}
 }
