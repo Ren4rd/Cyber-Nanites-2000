@@ -26,6 +26,7 @@ import java.util.List;
 import org.cyberpredators.nanites.model.StateNameMap;
 import org.cyberpredators.nanites.model.rules.Condition;
 import org.cyberpredators.nanites.model.rules.Conjonction;
+import org.cyberpredators.nanites.model.rules.Disjonction;
 import org.cyberpredators.nanites.model.rules.HighMaxCondition;
 import org.cyberpredators.nanites.model.rules.HighMinCondition;
 import org.cyberpredators.nanites.model.rules.LowMaxCondition;
@@ -43,6 +44,8 @@ public class YamlConditionFactory {
 			return createNumberCondition(yamlCondition, stateNames);
 		if (yamlCondition.containsKey("verifiesAll"))
 			return createConjonction(yamlCondition, stateNames);
+		if (yamlCondition.containsKey("verifiesOne"))
+			return createDisjonction(yamlCondition, stateNames);
 		else
 			return createTrue();
 	}
@@ -82,6 +85,13 @@ public class YamlConditionFactory {
 		for (YamlAdapter yamlSubCondition : yamlCondition.getListYamlOrThrow("verifiesAll", "No subcondition found in conjonction"))
 			conditions.add(createCondition(yamlSubCondition, stateNames));
 		return new Conjonction(conditions);
+	}
+
+	private static Condition createDisjonction(YamlAdapter yamlCondition, StateNameMap stateNames) throws ModFactoryException {
+		List<Condition> conditions = new ArrayList<>();
+		for (YamlAdapter yamlSubCondition : yamlCondition.getListYamlOrThrow("verifiesOne", "No subcondition found in conjonction"))
+			conditions.add(createCondition(yamlSubCondition, stateNames));
+		return new Disjonction(conditions);
 	}
 
 	private static Condition createTrue() {
