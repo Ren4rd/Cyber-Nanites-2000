@@ -20,16 +20,22 @@ package org.cyberpredators.nanites.model;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.HashMap;
+
+import javafx.scene.paint.Color;
+
 import org.cyberpredators.nanites.model.rules.RulesSet;
 
 public class Mod {
 
 	private final RulesSet rules;
 	private final StateNameMap stateNames;
+	private final HashMap<Byte, Color> stateColors;
 
-	public Mod(RulesSet rules, StateNameMap stateNames) {
+	public Mod(RulesSet rules, StateNameMap stateNames, HashMap<Byte, Color> stateColors) {
 		this.rules = rules;
 		this.stateNames = stateNames;
+		this.stateColors = stateColors;
 	}
 
 	public RulesSet getRules() {
@@ -38,6 +44,10 @@ public class Mod {
 
 	public String getNameOfState(Byte state) {
 		return stateNames.getNameOfState(state);
+	}
+
+	public Color getColorOfState(Byte state) {
+		return stateColors.get(state);
 	}
 
 	public int getNumberOfStates() {

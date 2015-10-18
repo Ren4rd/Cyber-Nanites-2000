@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
+import javafx.scene.paint.Color;
+
 import org.cyberpredators.nanites.model.Mod;
 import org.cyberpredators.nanites.model.rules.LowMaxCondition;
 import org.cyberpredators.nanites.model.rules.LowMinCondition;
@@ -64,6 +66,10 @@ public class YamlModFactoryTest {
 		"   number: 3\n" +
 		"   neighborState: living\n" +
 		"   thenBecome: living\n" +
+		
+		"colors: \n" +
+		"   dead: 0x101010\n" +
+		"   living: 0x1010FF\n" +
 
 		"defaultState: dead";
 
@@ -75,8 +81,8 @@ public class YamlModFactoryTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ModFactoryException e) {
-			fail("A mod factory exception occured");
 			e.printStackTrace();
+			fail("A mod factory exception occured");
 		}
 	}
 
@@ -106,6 +112,12 @@ public class YamlModFactoryTest {
 		assertThat(parsedMod.getRules().getRulesOfState((byte) 1).get(0).condition instanceof NumberCondition, is(true));
 		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(0).condition instanceof LowMinCondition, is(true));
 		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(1).condition instanceof LowMaxCondition, is(true));
+	}
+
+	@Test
+	public void testColorsOfStates() {
+		assertThat(parsedMod.getColorOfState((byte) 1), is(Color.web("0x101010")));
+		assertThat(parsedMod.getColorOfState((byte) 2), is(Color.web("0x1010FF")));
 	}
 }
 
