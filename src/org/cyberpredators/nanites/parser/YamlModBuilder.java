@@ -35,7 +35,7 @@ public class YamlModBuilder {
 
 	private final RulesSet rulesSet = new RulesSet();
 	private final StateNameMap stateNames = new StateNameMap();
-	private final HashMap<Byte, Color> stateColors = new HashMap<>();
+	private final HashMap<Byte, Color> stateColors;
 
 	public YamlModBuilder(YamlAdapter yaml) throws ModFactoryException {
 		String defaultStateName = yaml.getStringOrThrow("defaultState", "No default state found");
@@ -45,13 +45,23 @@ public class YamlModBuilder {
 		for (int i = 0; i < yamlRules.size(); i++)
 			addRule(yamlRules.get(i));
 
-		YamlAdapter yamlStateColors = yaml.getYamlOrThrow("colors", "No colors found");
-		for (String stateName : stateNames.getNames())
-			addStateColor(stateNames.getStateOfName(stateName), yamlStateColors.getStringOrThrow(stateName, "There are some states without colors."));
+		StateColorMapBuilder stateColorBuilder = new StateColorMapBuilder();
+		setGivenColorsOf(yaml, stateColorBuilder);
+		stateColorBuilder.completeWithRandomColors(stateNames);
+		stateColors = stateColorBuilder.getStateColors();
 	}
 
-	private void addStateColor(byte j, String hexColor) {
-		stateColors.put(j, Color.web(hexColor));
+	private void setGivenColorsOf(YamlAdapter yaml, StateColorMapBuilder stateColorBuilder) {
+		try {
+			YamlAdapter yamlStateColors = yaml.getYamlOrThrow("colors", "No colors found.");
+			for (String stateName : stateNames.getNames()) {
+				byte state = stateNames.getStateOfName(stateName);
+				String htmlColor = yamlStateColors.getStringOrThrow(stateName, "There are some states without colors.");
+				stateColorBuilder.put(state, Color.web(htmlColor));
+			}
+		} catch (ModFactoryException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	private void addRule(YamlAdapter yamlRule) throws ModFactoryException {
