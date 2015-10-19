@@ -69,7 +69,7 @@ public class YamlModFactoryTest {
 		
 		"colors: \n" +
 		"   dead: 0x101010\n" +
-		"   living: 0x1010FF\n" +
+		"   living: aliceblue\n" +
 
 		"defaultState: dead";
 
@@ -117,7 +117,7 @@ public class YamlModFactoryTest {
 	@Test
 	public void testColorsOfStates() {
 		assertThat(parsedMod.getColorOfState((byte) 1), is(Color.web("0x101010")));
-		assertThat(parsedMod.getColorOfState((byte) 2), is(Color.web("0x1010FF")));
+		assertThat(parsedMod.getColorOfState((byte) 2), is(Color.web("0xF0F8FF")));
 	}
 }
 
