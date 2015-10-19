@@ -21,6 +21,7 @@ package org.cyberpredators.nanites.parser.test;
  */
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -103,9 +104,9 @@ public class YamlModFactoryTest {
 
 	@Test
 	public void testTypeOfRules() {
-		assertThat(parsedMod.getRules().getRulesOfState((byte) 1).get(0).condition instanceof NumberCondition, is(true));
-		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(0).condition instanceof LowMinCondition, is(true));
-		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(1).condition instanceof LowMaxCondition, is(true));
+		assertThat(parsedMod.getRules().getRulesOfState((byte) 1).get(0).condition, instanceOf(NumberCondition.class));
+		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(0).condition, instanceOf(LowMinCondition.class));
+		assertThat(parsedMod.getRules().getRulesOfState((byte) 2).get(1).condition, instanceOf(LowMaxCondition.class));
 	}
 }
 
