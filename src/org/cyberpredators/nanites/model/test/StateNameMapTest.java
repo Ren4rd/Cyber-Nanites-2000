@@ -22,6 +22,7 @@ package org.cyberpredators.nanites.model.test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.hasItems;
 
 import org.cyberpredators.nanites.model.StateNameMap;
 import org.junit.Before;
@@ -64,5 +65,11 @@ public class StateNameMapTest {
 	public void testGetStateOfName() {
 		assertThat(sut.getStateOfName("dead"), is((byte) 1));
 		assertThat(sut.getStateOfName("living"), is((byte) 2));
+	}
+
+	@Test
+	public void testGetNames() {
+		assertThat(sut.getNames().size(), is(2));
+		assertThat(sut.getNames(), hasItems("dead", "living"));
 	}
 }

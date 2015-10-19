@@ -46,8 +46,8 @@ public class YamlModBuilder {
 			addRule(yamlRules.get(i));
 
 		YamlAdapter yamlStateColors = yaml.getYamlOrThrow("colors", "No colors found");
-		for (byte j = 1; j <= stateNames.getNumberOfStates(); j++)
-			addStateColor(j, yamlStateColors.getStringOrThrow(stateNames.getNameOfState(j), "There are some states without colors."));
+		for (String stateName : stateNames.getNames())
+			addStateColor(stateNames.getStateOfName(stateName), yamlStateColors.getStringOrThrow(stateName, "There are some states without colors."));
 	}
 
 	private void addStateColor(byte j, String hexColor) {

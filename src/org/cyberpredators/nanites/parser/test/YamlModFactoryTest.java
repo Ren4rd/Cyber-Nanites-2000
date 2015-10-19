@@ -117,7 +117,7 @@ public class YamlModFactoryTest {
 	@Test
 	public void testColorsOfStates() {
 		assertThat(parsedMod.getColorOfState((byte) 1), is(Color.web("0x101010")));
-		assertThat(parsedMod.getColorOfState((byte) 2), is(Color.web("0xF0F8FF")));
+		assertThat(parsedMod.getColorOfState((byte) 2), is(Color.ALICEBLUE));
 	}
 }
 

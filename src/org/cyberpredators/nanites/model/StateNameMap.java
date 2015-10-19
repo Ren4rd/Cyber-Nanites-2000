@@ -23,6 +23,7 @@ package org.cyberpredators.nanites.model;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class StateNameMap {
 
@@ -60,5 +61,9 @@ public class StateNameMap {
 
 	public int getNumberOfStates() {
 		return stateNames.size();
+	}
+
+	public Set<String> getNames() {
+		return stateNames.keySet();
 	}
 }
