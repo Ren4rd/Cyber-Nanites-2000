@@ -1,5 +1,7 @@
 # CyberNanites2000
 
+[![Build Status](https://secure.travis-ci.org/Ren4rd/Cyber-Nanites-2000.svg?branch=master)](http://travis-ci.org/Ren4rd/Cyber-Nanites-2000)
+
 > Have you ever heard of [cellular automata](https://en.wikipedia.org/wiki/Cellular_automaton)?
 
 CyberNanites2000 is a piece of software allowing you to play with a cellular automaton, and even to create your own !
