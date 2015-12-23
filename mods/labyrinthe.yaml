@@ -1,0 +1,18 @@
+rules:
+ - # overCrowding
+   ifIs: living
+   minimum: 4
+   neighborState: living
+   thenBecome: dead
+
+ - # birth
+   ifIs: dead
+   number: 3
+   neighborState: living
+   thenBecome: living
+
+colors:
+   dead: 0x101010
+   living: 0x1010FF
+
+defaultState: dead
