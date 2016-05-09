@@ -2,7 +2,7 @@ package org.cyberpredators.nanites.view;
 
 /*
  * GridView.java
- * Copyright (C) Remi Even 2015
+ * Copyright (C) Remi Even 2015-2016
  * 
  * This file is part of CyberNanites2000.
  * 
@@ -32,9 +32,13 @@ public class GridView extends Canvas {
 	private static final byte naniteHeight = 4;
 	private final GraphicsContext graphicsContext;
 
-	public GridView(NanitesGrid nanitesGrid) {
-		super(nanitesGrid.getWidth() * naniteWidth, nanitesGrid.getHeight() * naniteHeight);
+	public GridView() {
 		graphicsContext = this.getGraphicsContext2D();
+	}
+
+	public void setNanitesGrid(NanitesGrid nanitesGrid) {
+		this.setWidth(nanitesGrid.getWidth() * naniteWidth);
+		this.setHeight(nanitesGrid.getHeight() * naniteHeight);
 		printGrid(nanitesGrid);
 	}
 

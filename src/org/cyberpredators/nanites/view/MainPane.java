@@ -2,7 +2,7 @@ package org.cyberpredators.nanites.view;
 
 /*
  * MainPane.java
- * Copyright (C) Remi Even 2015
+ * Copyright (C) Remi Even 2015-2016
  * 
  * This file is part of CyberNanites2000.
  * 
@@ -20,35 +20,49 @@ package org.cyberpredators.nanites.view;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.ResourceBundle;
 
-import javafx.geometry.Insets;
-import javafx.scene.control.ScrollPane;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 
 import org.cyberpredators.nanites.model.Game;
 
-public class MainPane extends GridPane implements Observer {
+public class MainPane extends GridPane implements Observer, Initializable {
 
-	private final GridView gridView;
-	private final Text turnCounter;
+	@FXML private GridView gridView;
+	@FXML private Label turnCounter;
+
+	private final Game game;
 
 	public MainPane(Game game) {
-		this.setPadding(new Insets(20, 20, 20, 20));
+		this.game = game;
+		final URL url = getClass().getResource("/org/cyberpredators/nanites/view/main_pane.fxml");
+		final FXMLLoader fxmlLoader = new FXMLLoader(url, null);
+		fxmlLoader.setRoot(this);
+		fxmlLoader.setController(this);
+		try {
+			fxmlLoader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle bundle) {
 		game.addObserver(this);
-		ScrollPane scrollPane = new ScrollPane();
-		gridView = new GridView(game.getCurrentNanitesGrid());
 		gridView.setOnMouseClicked(event -> {
 			if (event.getButton() == MouseButton.PRIMARY)
 				game.nextState();
 		});
-		scrollPane.setContent(gridView);
-		this.add(scrollPane, 0, 0);
-		turnCounter = new Text();
-		this.add(turnCounter, 0, 1);
+		gridView.setNanitesGrid(game.getCurrentNanitesGrid());
 		update(game);
 	}
 
