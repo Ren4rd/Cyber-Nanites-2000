@@ -20,19 +20,23 @@ package org.cyberpredators.nanites.model;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.Observable;
+
 import org.cyberpredators.nanites.model.rules.RulesSet;
 
-public class Game {
+public class Game extends Observable {
 
 	private NanitesGrid currentGrid;
 	private NanitesGrid bufferGrid;
 	private final RulesApplier rulesApplier;
+	private int numberOfTurns;
 
 	public Game(NanitesGrid initialGrid, RulesSet rules) {
 		currentGrid = initialGrid;
 		bufferGrid = new NanitesGrid(currentGrid.getWidth(), currentGrid.getHeight());
 		bufferGrid.initialize();
 		rulesApplier = new RulesApplier(rules);
+		numberOfTurns = 0;
 	}
 
 	public NanitesGrid getCurrentNanitesGrid() {
@@ -41,12 +45,19 @@ public class Game {
 
 	public void nextState() {
 		rulesApplier.applyRulesTo(currentGrid, bufferGrid);
+		numberOfTurns++;
 		swapGrids();
+		notifyObservers();
 	}
 
 	private void swapGrids() {
 		NanitesGrid tmp = currentGrid;
 		currentGrid = bufferGrid;
 		bufferGrid = tmp;
+		setChanged();
+	}
+
+	public int getNumberOfTurns() {
+		return numberOfTurns;
 	}
 }

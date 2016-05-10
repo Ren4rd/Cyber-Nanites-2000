@@ -12,4 +12,8 @@ As yamlbeans returns a very generic map, this class is used to offer a more suit
 
 #### YamlModFactory
 
-This class contains static methods for creating a `Mod` from the `model` package, along with a set of method for instantiate the rules of an automaton. A `ModFactoryException` is thrown when something goes wrong.
+This class contains static methods for creating a `Mod` from the `model` package, along with a method to instantiate the rules of an automaton (using `YamlConditionFactory`). A `ModFactoryException` is thrown when something goes wrong.
+
+#### YamlConditionFactory
+
+This class contains static methods used to create `Condition`s, and is used by `YamlModFactory`.

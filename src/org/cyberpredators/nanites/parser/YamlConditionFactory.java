@@ -95,11 +95,6 @@ public class YamlConditionFactory {
 	}
 
 	private static Condition createTrue() {
-		return new Condition() {
-			@Override
-			public boolean verifiedIn(List<Byte> neighborhood) {
-				return true;
-			}
-		};
+		return (neighborhood -> true);
 	}
 }
