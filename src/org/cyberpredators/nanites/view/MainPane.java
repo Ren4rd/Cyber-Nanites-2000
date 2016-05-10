@@ -24,26 +24,28 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.ResourceBundle;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
+import javafx.util.Duration;
 
 import org.cyberpredators.nanites.model.Game;
 
-public class MainPane extends GridPane implements Observer, Initializable {
+public class MainPane extends GridPane implements Observer {
 
 	@FXML private GridView gridView;
 	@FXML private Label turnCounter;
 
-	private final Game game;
+	private final Timeline timeline;
+	private Game game;
 
-	public MainPane(Game game) {
-		this.game = game;
+	public MainPane() {
+		this.timeline = new Timeline();
 		final URL url = getClass().getResource("/org/cyberpredators/nanites/view/main_pane.fxml");
 		final FXMLLoader fxmlLoader = new FXMLLoader(url, null);
 		fxmlLoader.setRoot(this);
@@ -55,24 +57,47 @@ public class MainPane extends GridPane implements Observer, Initializable {
 		}
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle bundle) {
+	public void setGame(Game game) {
+		this.game = game;
 		game.addObserver(this);
 		gridView.setOnMouseClicked(event -> {
 			if (event.getButton() == MouseButton.PRIMARY)
 				game.nextState();
 		});
 		gridView.setNanitesGrid(game.getCurrentNanitesGrid());
-		update(game);
+		update();
 	}
 
 	@Override
-	public void update(Observable arg0, Object arg1) {
-		update((Game) arg0);
+	public void update(Observable observable, Object arg) {
+		update();
 	}
 
-	private void update(Game game) {
+	private void update() {
 		gridView.printGrid(game.getCurrentNanitesGrid());
 		turnCounter.setText("Turn " + game.getNumberOfTurns());
+	}
+
+	@FXML
+	private void next() {
+		game.nextState();
+	}
+
+	@FXML
+	private void autoplay() {
+		timeline.stop();
+		timeline.getKeyFrames().clear();
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		KeyFrame keyFrame = new KeyFrame(Duration.millis(100),
+				e -> {
+					game.nextState();
+				});
+		timeline.getKeyFrames().add(keyFrame);
+		timeline.playFromStart();
+	}
+
+	@FXML
+	public void stopAutoplay() {
+		timeline.stop();
 	}
 }

@@ -35,6 +35,10 @@
 	<ScrollPane GridPane.columnIndex="0" GridPane.rowIndex="0">
 		<GridView fx:id="gridView"/> 
 	</ScrollPane>
-	<Label fx:id="turnCounter" GridPane.columnIndex="0" GridPane.rowIndex="1">
-	</Label>
+	<HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" alignment="center">
+		<Label fx:id="turnCounter" />
+		<Button onAction="#autoplay" text="Play" />
+		<Button onAction="#stopAutoplay" text="Stop" />
+		<Button onAction="#next" text="Next" />
+	</HBox>
 </fx:root>

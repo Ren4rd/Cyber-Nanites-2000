@@ -2,7 +2,7 @@ package org.cyberpredators.nanites;
 
 /*
  * CyberNanites2000.java
- * Copyright (C) Remi Even 2015
+ * Copyright (C) Remi Even 2015-2016
  * 
  * This file is part of CyberNanites2000.
  * 
@@ -23,13 +23,9 @@ package org.cyberpredators.nanites;
 import java.io.FileReader;
 import java.io.IOException;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import org.cyberpredators.nanites.model.Game;
 import org.cyberpredators.nanites.model.Mod;
@@ -40,8 +36,6 @@ import org.cyberpredators.nanites.parser.YamlParser;
 import org.cyberpredators.nanites.view.MainPane;
 
 public class CyberNanites2000 extends Application {
-
-	public static Timeline timeline = new Timeline();
 
 	public static void main(String[] args) {
 		System.out.println("Hello webseekers !");
@@ -58,39 +52,25 @@ public class CyberNanites2000 extends Application {
 
 			NanitesGrid grid = new NanitesGrid(300, 200);
 			grid.initialize();
-			grid.setStateOf(1, 1, living);
-			grid.setStateOf(1, 2, living);
-			grid.setStateOf(1, 0, living);
+			grid.setStateOf(3, 0, living);
+			grid.setStateOf(3, 1, living);
+			grid.setStateOf(3, 2, living);
 
-			grid.setStateOf(4, 1, living);
-			grid.setStateOf(4, 2, living);
-			grid.setStateOf(4, 0, living);
-			grid.setStateOf(6, 0, living);
-			grid.setStateOf(6, 1, living);
-			grid.setStateOf(6, 2, living);
-			grid.setStateOf(6, 3, living);
+			grid.setStateOf(2, 2, living);
+			grid.setStateOf(1, 1, living);
+//			grid.setStateOf(4, 0, living);
+//			grid.setStateOf(6, 0, living);
+//			grid.setStateOf(6, 1, living);
+//			grid.setStateOf(6, 2, living);
+//			grid.setStateOf(6, 3, living);
 
 			Game game = new Game(grid, mod.getRules());
 
-			MainPane mainPane = new MainPane(game);
+			MainPane mainPane = new MainPane();
+			mainPane.setGame(game);
 			Scene scene = new Scene(mainPane, 800, 600);
-			scene.addEventHandler(KeyEvent.KEY_RELEASED, event-> {
-				switch (event.getCode()) {
-				case RIGHT:
-					game.nextState();
-					break;
-				case A:
-					autoplay(game);
-					break;
-				case S:
-					timeline.stop();
-					break;
-				default:
-					break;
-				}
-			});
 			primaryStage.setOnCloseRequest(event -> {
-				timeline.stop();
+				mainPane.stopAutoplay();
 			});
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("CyberNanites2000");
@@ -98,17 +78,5 @@ public class CyberNanites2000 extends Application {
 		} catch (IOException | ModFactoryException e) {
 			e.printStackTrace();
 		}
-	}
-
-	private void autoplay(Game game) {
-		timeline.stop();
-		timeline = new Timeline();
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		KeyFrame keyFrame = new KeyFrame(Duration.millis(50),
-				e -> {
-					game.nextState();
-				});
-		timeline.getKeyFrames().add(keyFrame);
-		timeline.playFromStart();
 	}
 }
