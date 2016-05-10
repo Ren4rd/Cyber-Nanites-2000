@@ -2,7 +2,7 @@ package org.cyberpredators.nanites.parser.test;
 
 /*
  * YamlModFactoryTest.java
- * Copyright (C) Remi Even 2015
+ * Copyright (C) Remi Even 2015-2016
  * 
  * This file is part of CyberNanites2000.
  * 
@@ -48,7 +48,7 @@ public class YamlModFactoryTest {
 
 	private Mod parsedMod;
 
-	private final String yamlGameOfLifeMod =
+	private final String yamlExtendedGameOfLifeMod =
 		"rules: \n" +
 		" - #overCrowding\n" +
 		"   ifIs: living\n" +
@@ -68,6 +68,10 @@ public class YamlModFactoryTest {
 		"   neighborState: living\n" +
 		"   thenBecome: living\n" +
 		
+		" - #void\n" +
+		"   ifIs: void\n" +
+		"   thenBecome: void\n" +
+
 		"colors: \n" +
 		"   dead: 0x101010\n" +
 		"   living: aliceblue\n" +
@@ -77,7 +81,7 @@ public class YamlModFactoryTest {
 	@Before
 	public void setUp() throws YamlException {
 		parsedMod = null;
-		try (Reader sourceReader = new StringReader(yamlGameOfLifeMod)) {
+		try (Reader sourceReader = new StringReader(yamlExtendedGameOfLifeMod)) {
 			parsedMod = YamlModFactory.createMod(YamlParser.parse(sourceReader));			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -99,7 +103,7 @@ public class YamlModFactoryTest {
 
 	@Test
 	public void testStatesNumber() {
-		assertThat(parsedMod.getNumberOfStates(), is(2));
+		assertThat(parsedMod.getNumberOfStates(), is(3));
 	}
 
 	@Test
@@ -117,8 +121,9 @@ public class YamlModFactoryTest {
 
 	@Test
 	public void testColorsOfStates() {
-		assertThat(parsedMod.getColorOfState((byte) 1), is(Color.web("0x101010")));
-		assertThat(parsedMod.getColorOfState((byte) 2), is(Color.ALICEBLUE));
+		assertThat(parsedMod.getColorMap().get((byte) 1), is(Color.web("0x101010")));
+		assertThat(parsedMod.getColorMap().get((byte) 2), is(Color.ALICEBLUE));
+		assertThat(parsedMod.getColorMap().get((byte) 3), notNullValue());
 	}
 }
 

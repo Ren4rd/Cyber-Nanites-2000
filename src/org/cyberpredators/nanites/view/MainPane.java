@@ -35,6 +35,7 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
 import org.cyberpredators.nanites.model.Game;
+import org.cyberpredators.nanites.model.Mod;
 
 public class MainPane extends GridPane implements Observer {
 
@@ -66,6 +67,10 @@ public class MainPane extends GridPane implements Observer {
 		});
 		gridView.setNanitesGrid(game.getCurrentNanitesGrid());
 		update();
+	}
+
+	public void useMod(Mod mod) {
+		gridView.setColorMap(mod.getColorMap());
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package org.cyberpredators.nanites.model;
 
 /*
  * Mod.java
- * Copyright (C) Remi Even 2015
+ * Copyright (C) Remi Even 2015-2016
  * 
  * This file is part of CyberNanites2000.
  * 
@@ -46,8 +46,8 @@ public class Mod {
 		return stateNames.getNameOfState(state);
 	}
 
-	public Color getColorOfState(Byte state) {
-		return stateColors.get(state);
+	public HashMap<Byte, Color> getColorMap() {
+		return stateColors;
 	}
 
 	public int getNumberOfStates() {

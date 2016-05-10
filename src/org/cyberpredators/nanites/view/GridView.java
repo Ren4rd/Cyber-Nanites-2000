@@ -20,6 +20,8 @@ package org.cyberpredators.nanites.view;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.HashMap;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -31,6 +33,7 @@ public class GridView extends Canvas {
 	private static final byte naniteWidth = 4;
 	private static final byte naniteHeight = 4;
 	private final GraphicsContext graphicsContext;
+	private HashMap<Byte, Color> colorMap;
 
 	public GridView() {
 		graphicsContext = this.getGraphicsContext2D();
@@ -39,19 +42,18 @@ public class GridView extends Canvas {
 	public void setNanitesGrid(NanitesGrid nanitesGrid) {
 		this.setWidth(nanitesGrid.getWidth() * naniteWidth);
 		this.setHeight(nanitesGrid.getHeight() * naniteHeight);
-		printGrid(nanitesGrid);
+	}
+
+	public void setColorMap(HashMap<Byte, Color> colorMap) {
+		this.colorMap = colorMap;
 	}
 
 	public synchronized void printGrid(NanitesGrid nanitesGrid) {
-		graphicsContext.setFill(Color.BLACK);
-		for (int i = 0; i < nanitesGrid.getWidth(); i++)
-			for (int j = 0; j < nanitesGrid.getHeight(); j++)
-				if (nanitesGrid.getStateOf(i, j) == 2)
-					graphicsContext.fillRect(i*naniteWidth, j*naniteHeight, naniteWidth, naniteHeight);
-		graphicsContext.setFill(Color.WHITE);
-		for (int i = 0; i < nanitesGrid.getWidth(); i++)
-			for (int j = 0; j < nanitesGrid.getHeight(); j++)
-				if (nanitesGrid.getStateOf(i, j) == 1)
-					graphicsContext.fillRect(i*naniteWidth, j*naniteHeight, naniteWidth, naniteHeight);
+		for (int i = 0; i < nanitesGrid.getWidth(); i++) {
+			for (int j = 0; j < nanitesGrid.getHeight(); j++) {
+				graphicsContext.setFill(colorMap.get(nanitesGrid.getStateOf(i, j)));
+				graphicsContext.fillRect(i*naniteWidth, j*naniteHeight, naniteWidth, naniteHeight);
+			}
+		}
 	}
 }

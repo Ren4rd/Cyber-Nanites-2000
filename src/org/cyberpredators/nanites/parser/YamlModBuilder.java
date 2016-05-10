@@ -2,7 +2,7 @@ package org.cyberpredators.nanites.parser;
 
 /*
  * YamlModBuilder.java
- * Copyright (C) Remi Even 2015
+ * Copyright (C) Remi Even 2015-2016
  * 
  * This file is part of CyberNanites2000.
  * 
@@ -54,11 +54,18 @@ public class YamlModBuilder {
 	private void setGivenColorsOf(YamlAdapter yaml, StateColorMapBuilder stateColorBuilder) {
 		try {
 			YamlAdapter yamlStateColors = yaml.getYamlOrThrow("colors", "No colors found.");
-			for (String stateName : stateNames.getNames()) {
-				byte state = stateNames.getStateOfName(stateName);
-				String htmlColor = yamlStateColors.getStringOrThrow(stateName, "There are some states without colors.");
-				stateColorBuilder.put(state, Color.web(htmlColor));
-			}
+			for (String stateName : stateNames.getNames())
+				setColorIfGiven(stateColorBuilder, yamlStateColors, stateName);
+		} catch (ModFactoryException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	private void setColorIfGiven(StateColorMapBuilder stateColorBuilder, YamlAdapter yamlStateColors, String stateName) {
+		byte state = stateNames.getStateOfName(stateName);
+		try {
+			String htmlColor = yamlStateColors.getStringOrThrow(stateName, "No color specified for state " + stateName);
+			stateColorBuilder.put(state, Color.web(htmlColor));
 		} catch (ModFactoryException e) {
 			System.out.println(e.getMessage());
 		}

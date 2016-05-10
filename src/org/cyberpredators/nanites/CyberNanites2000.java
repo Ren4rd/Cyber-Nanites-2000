@@ -55,18 +55,13 @@ public class CyberNanites2000 extends Application {
 			grid.setStateOf(3, 0, living);
 			grid.setStateOf(3, 1, living);
 			grid.setStateOf(3, 2, living);
-
 			grid.setStateOf(2, 2, living);
 			grid.setStateOf(1, 1, living);
-//			grid.setStateOf(4, 0, living);
-//			grid.setStateOf(6, 0, living);
-//			grid.setStateOf(6, 1, living);
-//			grid.setStateOf(6, 2, living);
-//			grid.setStateOf(6, 3, living);
 
 			Game game = new Game(grid, mod.getRules());
 
 			MainPane mainPane = new MainPane();
+			mainPane.useMod(mod);
 			mainPane.setGame(game);
 			Scene scene = new Scene(mainPane, 800, 600);
 			primaryStage.setOnCloseRequest(event -> {
