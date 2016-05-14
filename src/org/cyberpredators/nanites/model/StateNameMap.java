@@ -2,7 +2,7 @@ package org.cyberpredators.nanites.model;
 
 /*
  * StateNameMap.java
- * Copyright (C) Remi Even 2015
+ * Copyright (C) Remi Even 2015-2016
  * 
  * This file is part of CyberNanites2000.
  * 
@@ -20,6 +20,7 @@ package org.cyberpredators.nanites.model;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -65,5 +66,9 @@ public class StateNameMap {
 
 	public Set<String> getNames() {
 		return stateNames.keySet();
+	}
+
+	public Collection<Byte> getStates() {
+		return stateNames.values();
 	}
 }

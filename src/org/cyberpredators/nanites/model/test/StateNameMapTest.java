@@ -2,7 +2,7 @@ package org.cyberpredators.nanites.model.test;
 
 /*
  * StateNameMapTest.java
- * Copyright (C) Remi Even 2015
+ * Copyright (C) Remi Even 2015-2016
  * 
  * This file is part of CyberNanites2000.
  * 
@@ -71,5 +71,11 @@ public class StateNameMapTest {
 	public void testGetNames() {
 		assertThat(sut.getNames().size(), is(2));
 		assertThat(sut.getNames(), hasItems("dead", "living"));
+	}
+
+	@Test
+	public void testGetStates() {
+		assertThat(sut.getStates().size(), is(2));
+		assertThat(sut.getStates(), hasItems((byte) 1, (byte) 2));
 	}
 }

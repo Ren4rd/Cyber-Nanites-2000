@@ -103,7 +103,7 @@ public class YamlModFactoryTest {
 
 	@Test
 	public void testStatesNumber() {
-		assertThat(parsedMod.getNumberOfStates(), is(3));
+		assertThat(parsedMod.getStates().size(), is(3));
 	}
 
 	@Test

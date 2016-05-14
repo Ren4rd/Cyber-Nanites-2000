@@ -20,6 +20,7 @@ package org.cyberpredators.nanites.model;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import javafx.scene.paint.Color;
@@ -50,7 +51,7 @@ public class Mod {
 		return stateColors;
 	}
 
-	public int getNumberOfStates() {
-		return stateNames.getNumberOfStates();
+	public Collection<Byte> getStates() {
+		return stateNames.getStates();
 	}
 }
