@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -39,13 +40,13 @@ import org.cyberpredators.nanites.model.NanitesGrid;
 
 public class GridView extends ScrollPane implements Initializable {
 
-	private static final byte naniteWidth = 8;
-	private static final byte naniteHeight = 8;
+	private static final int initialZoomFactor = 4;
 
 	@FXML private Canvas canvas;
 	@FXML private GridViewContextMenu contextMenu;
 	private HashMap<Byte, Color> colorMap;
 	private NanitesGrid grid;
+	private final SimpleIntegerProperty zoomFactor;
 
 	public GridView() {
 		final URL url = getClass().getResource("/org/cyberpredators/nanites/view/grid_view.fxml");
@@ -57,6 +58,10 @@ public class GridView extends ScrollPane implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		zoomFactor = new SimpleIntegerProperty(initialZoomFactor);
+		zoomFactor.addListener((observable, oldZoomFactor, newZoomFactor) -> {
+			this.updateCanvasSize();
+		});
 	}
 
 	@Override
@@ -65,8 +70,8 @@ public class GridView extends ScrollPane implements Initializable {
 		canvas.setOnMouseClicked(event -> {
 			int x = (int) event.getX();
 			int y = (int) event.getY();
-			int gridX = (int) (x / naniteWidth);
-			int gridY = (int) (y / naniteHeight);
+			int gridX = (int) (x / zoomFactor.get());
+			int gridY = (int) (y / zoomFactor.get());
 			if (event.getButton() == MouseButton.SECONDARY) {
 				contextMenu.setGridPosition(gridX, gridY);
 				contextMenu.show(this, event.getScreenX(), event.getScreenY());
@@ -78,9 +83,13 @@ public class GridView extends ScrollPane implements Initializable {
 
 	public void setNanitesGrid(NanitesGrid grid) {
 		this.grid = grid;
-		canvas.setWidth(grid.getWidth() * naniteWidth);
-		canvas.setHeight(grid.getHeight() * naniteHeight);
 		contextMenu.setNanitesGrid(grid);
+		updateCanvasSize();
+	}
+
+	private void updateCanvasSize() {
+		canvas.setWidth(grid.getWidth() * zoomFactor.get());
+		canvas.setHeight(grid.getHeight() * zoomFactor.get());
 		printGrid();
 	}
 
@@ -91,10 +100,11 @@ public class GridView extends ScrollPane implements Initializable {
 
 	private void printGrid() {
 		final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+		final int zoomFactor = this.zoomFactor.get();
 		for (int i = 0; i < grid.getWidth(); i++) {
 			for (int j = 0; j < grid.getHeight(); j++) {
 				graphicsContext.setFill(colorMap.get(grid.getStateOf(i, j)));
-				graphicsContext.fillRect(i*naniteWidth, j*naniteHeight, naniteWidth, naniteHeight);
+				graphicsContext.fillRect(i*zoomFactor, j*zoomFactor, zoomFactor, zoomFactor);
 			}
 		}
 	}
