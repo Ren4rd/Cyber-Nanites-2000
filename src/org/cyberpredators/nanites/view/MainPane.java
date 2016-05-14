@@ -30,7 +30,6 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
@@ -61,16 +60,12 @@ public class MainPane extends GridPane implements Observer {
 	public void setGame(Game game) {
 		this.game = game;
 		game.addObserver(this);
-		gridView.setOnMouseClicked(event -> {
-			if (event.getButton() == MouseButton.PRIMARY)
-				game.nextState();
-		});
 		gridView.setNanitesGrid(game.getCurrentNanitesGrid());
 		update();
 	}
 
 	public void useMod(Mod mod) {
-		gridView.setColorMap(mod.getColorMap());
+		gridView.useMod(mod);
 	}
 
 	@Override
@@ -79,7 +74,7 @@ public class MainPane extends GridPane implements Observer {
 	}
 
 	private void update() {
-		gridView.printGrid(game.getCurrentNanitesGrid());
+		gridView.setNanitesGrid(game.getCurrentNanitesGrid());
 		turnCounter.setText("Turn " + game.getNumberOfTurns());
 	}
 
@@ -93,10 +88,7 @@ public class MainPane extends GridPane implements Observer {
 		timeline.stop();
 		timeline.getKeyFrames().clear();
 		timeline.setCycleCount(Timeline.INDEFINITE);
-		KeyFrame keyFrame = new KeyFrame(Duration.millis(100),
-				e -> {
-					game.nextState();
-				});
+		KeyFrame keyFrame = new KeyFrame(Duration.millis(100), e -> game.nextState());
 		timeline.getKeyFrames().add(keyFrame);
 		timeline.playFromStart();
 	}

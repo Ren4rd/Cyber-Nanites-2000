@@ -64,9 +64,7 @@ public class CyberNanites2000 extends Application {
 			mainPane.useMod(mod);
 			mainPane.setGame(game);
 			Scene scene = new Scene(mainPane, 800, 600);
-			primaryStage.setOnCloseRequest(event -> {
-				mainPane.stopAutoplay();
-			});
+			primaryStage.setOnCloseRequest(event -> mainPane.stopAutoplay());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("CyberNanites2000");
 			primaryStage.show();

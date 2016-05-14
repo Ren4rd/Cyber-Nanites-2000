@@ -20,38 +20,80 @@ package org.cyberpredators.nanites.view;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 
+import org.cyberpredators.nanites.model.Mod;
 import org.cyberpredators.nanites.model.NanitesGrid;
 
-public class GridView extends Canvas {
+public class GridView extends ScrollPane implements Initializable {
 
-	private static final byte naniteWidth = 4;
-	private static final byte naniteHeight = 4;
-	private final GraphicsContext graphicsContext;
+	private static final byte naniteWidth = 8;
+	private static final byte naniteHeight = 8;
+
+	@FXML private Canvas canvas;
+	@FXML private GridViewContextMenu contextMenu;
 	private HashMap<Byte, Color> colorMap;
+	private NanitesGrid grid;
 
 	public GridView() {
-		graphicsContext = this.getGraphicsContext2D();
+		final URL url = getClass().getResource("/org/cyberpredators/nanites/view/grid_view.fxml");
+		final FXMLLoader fxmlLoader = new FXMLLoader(url, null);
+		fxmlLoader.setRoot(this);
+		fxmlLoader.setController(this);
+		try {
+			fxmlLoader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void setNanitesGrid(NanitesGrid nanitesGrid) {
-		this.setWidth(nanitesGrid.getWidth() * naniteWidth);
-		this.setHeight(nanitesGrid.getHeight() * naniteHeight);
+	@Override
+	public void initialize(URL location, ResourceBundle bundle) {
+		contextMenu.setCallback(done -> printGrid());
+		canvas.setOnMouseClicked(event -> {
+			int x = (int) event.getX();
+			int y = (int) event.getY();
+			int gridX = (int) (x / naniteWidth);
+			int gridY = (int) (y / naniteHeight);
+			if (event.getButton() == MouseButton.SECONDARY) {
+				contextMenu.setGridPosition(gridX, gridY);
+				contextMenu.show(this, event.getScreenX(), event.getScreenY());
+			} else {
+				contextMenu.hide();
+			}
+		});
 	}
 
-	public void setColorMap(HashMap<Byte, Color> colorMap) {
-		this.colorMap = colorMap;
+	public void setNanitesGrid(NanitesGrid grid) {
+		this.grid = grid;
+		canvas.setWidth(grid.getWidth() * naniteWidth);
+		canvas.setHeight(grid.getHeight() * naniteHeight);
+		contextMenu.setNanitesGrid(grid);
+		printGrid();
 	}
 
-	public synchronized void printGrid(NanitesGrid nanitesGrid) {
-		for (int i = 0; i < nanitesGrid.getWidth(); i++) {
-			for (int j = 0; j < nanitesGrid.getHeight(); j++) {
-				graphicsContext.setFill(colorMap.get(nanitesGrid.getStateOf(i, j)));
+	public void useMod(Mod mod) {
+		contextMenu.useMod(mod);
+		colorMap = mod.getColorMap();
+	}
+
+	private void printGrid() {
+		final GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+		for (int i = 0; i < grid.getWidth(); i++) {
+			for (int j = 0; j < grid.getHeight(); j++) {
+				graphicsContext.setFill(colorMap.get(grid.getStateOf(i, j)));
 				graphicsContext.fillRect(i*naniteWidth, j*naniteHeight, naniteWidth, naniteHeight);
 			}
 		}
