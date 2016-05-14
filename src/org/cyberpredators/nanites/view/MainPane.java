@@ -30,6 +30,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 
@@ -40,6 +41,7 @@ public class MainPane extends GridPane implements Observer {
 
 	@FXML private GridView gridView;
 	@FXML private Label turnCounter;
+	@FXML private Slider zoomSlider;
 
 	private final Timeline timeline;
 	private Game game;
@@ -55,6 +57,7 @@ public class MainPane extends GridPane implements Observer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		gridView.zoomFactorProperty().bind(zoomSlider.valueProperty());
 	}
 
 	public void setGame(Game game) {

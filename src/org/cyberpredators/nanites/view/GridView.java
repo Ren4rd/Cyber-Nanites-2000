@@ -88,9 +88,11 @@ public class GridView extends ScrollPane implements Initializable {
 	}
 
 	private void updateCanvasSize() {
-		canvas.setWidth(grid.getWidth() * zoomFactor.get());
-		canvas.setHeight(grid.getHeight() * zoomFactor.get());
-		printGrid();
+		if (grid != null) {
+			canvas.setWidth(grid.getWidth() * zoomFactor.get());
+			canvas.setHeight(grid.getHeight() * zoomFactor.get());
+			printGrid();
+		}
 	}
 
 	public void useMod(Mod mod) {
@@ -107,5 +109,9 @@ public class GridView extends ScrollPane implements Initializable {
 				graphicsContext.fillRect(i*zoomFactor, j*zoomFactor, zoomFactor, zoomFactor);
 			}
 		}
+	}
+
+	public SimpleIntegerProperty zoomFactorProperty() {
+		return zoomFactor;
 	}
 }
