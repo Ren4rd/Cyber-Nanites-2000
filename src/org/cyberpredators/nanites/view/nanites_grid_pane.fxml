@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+ nanites_grid_pane.fxml
+ Copyright (C) Remi Even 2016
+
+ This file is part of CyberNanites2000.
+
+ CyberNanites2000 is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ CyberNanites2000 is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<?import org.cyberpredators.nanites.view.GridView?>
+
+<fx:root
+		type="javafx.scene.layout.GridPane"
+		xmlns:fx="http://javafx.com/fxml">
+	<padding>
+		<Insets bottom="20" left="20" top="20" right="20" />
+	</padding>
+	<GridView fx:id="gridView" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="always" GridPane.vgrow="always" />
+	<HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" alignment="center">
+		<Label fx:id="turnCounter" />
+		<Button fx:id="autoPlayButton" onAction="#autoplay" text="Play" />
+		<Button fx:id="stopAutoPlayButton" onAction="#stopAutoplay" text="Stop" />
+		<Button fx:id="nextButton" onAction="#next" text="Next" />
+	</HBox>
+	<HBox GridPane.columnIndex="0" GridPane.rowIndex="2" spacing="10" alignment="center">
+		<Label text="Zoom" />
+		<Slider fx:id="zoomSlider" min="1" max="20" blockIncrement="1" majorTickUnit="1" />
+	</HBox>
+</fx:root>

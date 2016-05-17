@@ -2,8 +2,8 @@ package org.cyberpredators.nanites;
 
 /*
  * CyberNanites2000.java
- * Copyright (C) Remi Even 2015
- *
+ * Copyright (C) Remi Even 2015-2016
+ * 
  * This file is part of CyberNanites2000.
  *
  * CyberNanites2000 is free software: you can redistribute it and/or modify
@@ -20,10 +20,26 @@ package org.cyberpredators.nanites;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class CyberNanites2000 {
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import org.cyberpredators.nanites.view.MainPane;
+
+public class CyberNanites2000 extends Application {
 
 	public static void main(String[] args) {
 		System.out.println("Hello webseekers !");
+		launch(args);
 	}
 
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		MainPane mainPane = new MainPane();
+		Scene scene = new Scene(mainPane, 800, 600);
+		primaryStage.setOnCloseRequest(event -> mainPane.quitApplication());
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("CyberNanites2000");
+		primaryStage.show();
+	}
 }

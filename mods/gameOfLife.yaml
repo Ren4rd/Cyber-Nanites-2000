@@ -17,4 +17,7 @@ rules:
    neighborState: living
    thenBecome: living
 
+colors:
+   dead: 0x101010
+
 defaultState: dead
