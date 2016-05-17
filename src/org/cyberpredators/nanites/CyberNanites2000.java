@@ -20,20 +20,11 @@ package org.cyberpredators.nanites;
  * along with CyberNanites2000. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.io.FileReader;
-import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import org.cyberpredators.nanites.model.Game;
-import org.cyberpredators.nanites.model.Mod;
-import org.cyberpredators.nanites.model.NanitesGrid;
-import org.cyberpredators.nanites.parser.ModFactoryException;
-import org.cyberpredators.nanites.parser.YamlModFactory;
-import org.cyberpredators.nanites.parser.YamlParser;
-import org.cyberpredators.nanites.view.NanitesGridPane;
+import org.cyberpredators.nanites.view.MainPane;
 
 public class CyberNanites2000 extends Application {
 
@@ -44,32 +35,11 @@ public class CyberNanites2000 extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		try (FileReader fileReader = new FileReader("mods/gameOfLife.yaml")) {
-			Mod mod = YamlModFactory.createMod(YamlParser.parse(fileReader));
-
-			final byte living = 2;
-			assert("living" == mod.getNameOfState((byte) 2));
-
-			NanitesGrid grid = new NanitesGrid(300, 200);
-			grid.initialize();
-			grid.setStateOf(3, 0, living);
-			grid.setStateOf(3, 1, living);
-			grid.setStateOf(3, 2, living);
-			grid.setStateOf(2, 2, living);
-			grid.setStateOf(1, 1, living);
-
-			Game game = new Game(grid, mod.getRules());
-
-			NanitesGridPane nanitesGridPane = new NanitesGridPane();
-			nanitesGridPane.useMod(mod);
-			nanitesGridPane.setGame(game);
-			Scene scene = new Scene(nanitesGridPane, 800, 600);
-			primaryStage.setOnCloseRequest(event -> nanitesGridPane.stopAutoplay());
-			primaryStage.setScene(scene);
-			primaryStage.setTitle("CyberNanites2000");
-			primaryStage.show();
-		} catch (IOException | ModFactoryException e) {
-			e.printStackTrace();
-		}
+		MainPane mainPane = new MainPane();
+		Scene scene = new Scene(mainPane, 800, 600);
+		primaryStage.setOnCloseRequest(event -> mainPane.quitApplication());
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("CyberNanites2000");
+		primaryStage.show();
 	}
 }
