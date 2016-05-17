@@ -24,11 +24,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.ResourceBundle;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
@@ -37,14 +43,18 @@ import javafx.util.Duration;
 import org.cyberpredators.nanites.model.Game;
 import org.cyberpredators.nanites.model.Mod;
 
-public class NanitesGridPane extends GridPane implements Observer {
+public class NanitesGridPane extends GridPane implements Observer, Initializable {
 
+	@FXML private Button autoPlayButton;
+	@FXML private Button stopAutoPlayButton;
+	@FXML private Button nextButton;
 	@FXML private GridView gridView;
 	@FXML private Label turnCounter;
 	@FXML private Slider zoomSlider;
 
 	private final Timeline timeline;
-	private Game game;
+	private final SimpleBooleanProperty isPlaying = new SimpleBooleanProperty(false);
+	private final SimpleObjectProperty<Game> game = new SimpleObjectProperty<>();
 
 	public NanitesGridPane() {
 		this.timeline = new Timeline();
@@ -60,8 +70,16 @@ public class NanitesGridPane extends GridPane implements Observer {
 		gridView.zoomFactorProperty().bind(zoomSlider.valueProperty());
 	}
 
+	@Override
+	public void initialize(URL location, ResourceBundle bundle) {
+		BooleanBinding gameOff = game.isNull();
+		autoPlayButton.disableProperty().bind(isPlaying.or(gameOff));
+		stopAutoPlayButton.disableProperty().bind(isPlaying.not().or(gameOff));
+		nextButton.disableProperty().bind(isPlaying.or(gameOff));
+	}
+
 	public void setGame(Game game) {
-		this.game = game;
+		this.game.set(game);
 		game.addObserver(this);
 		gridView.setNanitesGrid(game.getCurrentNanitesGrid());
 		update();
@@ -77,13 +95,13 @@ public class NanitesGridPane extends GridPane implements Observer {
 	}
 
 	private void update() {
-		gridView.setNanitesGrid(game.getCurrentNanitesGrid());
-		turnCounter.setText("Turn " + game.getNumberOfTurns());
+		gridView.setNanitesGrid(game.get().getCurrentNanitesGrid());
+		turnCounter.setText("Turn " + game.get().getNumberOfTurns());
 	}
 
 	@FXML
 	private void next() {
-		game.nextState();
+		game.get().nextState();
 	}
 
 	@FXML
@@ -91,13 +109,15 @@ public class NanitesGridPane extends GridPane implements Observer {
 		timeline.stop();
 		timeline.getKeyFrames().clear();
 		timeline.setCycleCount(Timeline.INDEFINITE);
-		KeyFrame keyFrame = new KeyFrame(Duration.millis(100), e -> game.nextState());
+		KeyFrame keyFrame = new KeyFrame(Duration.millis(100), e -> game.get().nextState());
 		timeline.getKeyFrames().add(keyFrame);
 		timeline.playFromStart();
+		isPlaying.setValue(true);
 	}
 
 	@FXML
 	public void stopAutoplay() {
 		timeline.stop();
+		isPlaying.setValue(false);
 	}
 }

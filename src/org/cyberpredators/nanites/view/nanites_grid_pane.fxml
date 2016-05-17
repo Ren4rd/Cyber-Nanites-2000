@@ -35,9 +35,9 @@
 	<GridView fx:id="gridView" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="always" GridPane.vgrow="always" />
 	<HBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" alignment="center">
 		<Label fx:id="turnCounter" />
-		<Button onAction="#autoplay" text="Play" />
-		<Button onAction="#stopAutoplay" text="Stop" />
-		<Button onAction="#next" text="Next" />
+		<Button fx:id="autoPlayButton" onAction="#autoplay" text="Play" />
+		<Button fx:id="stopAutoPlayButton" onAction="#stopAutoplay" text="Stop" />
+		<Button fx:id="nextButton" onAction="#next" text="Next" />
 	</HBox>
 	<HBox GridPane.columnIndex="0" GridPane.rowIndex="2" spacing="10" alignment="center">
 		<Label text="Zoom" />
