@@ -33,7 +33,7 @@ import org.cyberpredators.nanites.model.NanitesGrid;
 import org.cyberpredators.nanites.parser.ModFactoryException;
 import org.cyberpredators.nanites.parser.YamlModFactory;
 import org.cyberpredators.nanites.parser.YamlParser;
-import org.cyberpredators.nanites.view.MainPane;
+import org.cyberpredators.nanites.view.NanitesGridPane;
 
 public class CyberNanites2000 extends Application {
 
@@ -60,11 +60,11 @@ public class CyberNanites2000 extends Application {
 
 			Game game = new Game(grid, mod.getRules());
 
-			MainPane mainPane = new MainPane();
-			mainPane.useMod(mod);
-			mainPane.setGame(game);
-			Scene scene = new Scene(mainPane, 800, 600);
-			primaryStage.setOnCloseRequest(event -> mainPane.stopAutoplay());
+			NanitesGridPane nanitesGridPane = new NanitesGridPane();
+			nanitesGridPane.useMod(mod);
+			nanitesGridPane.setGame(game);
+			Scene scene = new Scene(nanitesGridPane, 800, 600);
+			primaryStage.setOnCloseRequest(event -> nanitesGridPane.stopAutoplay());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("CyberNanites2000");
 			primaryStage.show();

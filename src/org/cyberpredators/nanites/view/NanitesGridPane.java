@@ -1,7 +1,7 @@
 package org.cyberpredators.nanites.view;
 
 /*
- * MainPane.java
+ * NanitesGridPane.java
  * Copyright (C) Remi Even 2015-2016
  * 
  * This file is part of CyberNanites2000.
@@ -37,7 +37,7 @@ import javafx.util.Duration;
 import org.cyberpredators.nanites.model.Game;
 import org.cyberpredators.nanites.model.Mod;
 
-public class MainPane extends GridPane implements Observer {
+public class NanitesGridPane extends GridPane implements Observer {
 
 	@FXML private GridView gridView;
 	@FXML private Label turnCounter;
@@ -46,9 +46,9 @@ public class MainPane extends GridPane implements Observer {
 	private final Timeline timeline;
 	private Game game;
 
-	public MainPane() {
+	public NanitesGridPane() {
 		this.timeline = new Timeline();
-		final URL url = getClass().getResource("/org/cyberpredators/nanites/view/main_pane.fxml");
+		final URL url = getClass().getResource("/org/cyberpredators/nanites/view/nanites_grid_pane.fxml");
 		final FXMLLoader fxmlLoader = new FXMLLoader(url, null);
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
