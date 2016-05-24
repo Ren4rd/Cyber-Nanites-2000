@@ -2,7 +2,7 @@ package org.cyberpredators.nanites.model.test;
 
 /*
  * NanitesGridTest.java
- * Copyright (C) Remi Even 2015
+ * Copyright (C) Remi Even 2015-2016
  *
  * This file is part of CyberNanites2000.
  *
@@ -22,6 +22,7 @@ package org.cyberpredators.nanites.model.test;
 
 import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
@@ -72,7 +73,7 @@ public class NanitesGridTest {
 	}
 
 	@Test
-	public void testGetNeighborhodd() {
+	public void testGetNeighborhood() {
 		List<Byte> neighbors  = sut.getNeighborhoodOf(1, 1);
 		assertThat(neighbors.size(), is(8));
 		assertThat(neighbors, hasItem((byte) 1));
@@ -83,5 +84,16 @@ public class NanitesGridTest {
 		assertThat(neighbors, hasItem((byte) 7));
 		assertThat(neighbors, hasItem((byte) 8));
 		assertThat(neighbors, hasItem((byte) 9));
+	}
+
+	@Test
+	public void testGetSubgrid() {
+		NanitesGrid subgrid = sut.subgrid(0, 1, 3, 1);
+		assertThat(subgrid, notNullValue());
+		assertThat(subgrid.getWidth(), is(3));
+		assertThat(subgrid.getHeight(), is(1));
+		assertThat(subgrid.getStateOf(0, 0), is(sut.getStateOf(0, 1)));
+		assertThat(subgrid.getStateOf(1, 0), is(sut.getStateOf(1, 1)));
+		assertThat(subgrid.getStateOf(2, 0), is(sut.getStateOf(2, 1)));
 	}
 }

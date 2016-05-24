@@ -5,7 +5,7 @@ import java.util.List;
 
 /*
  * NanitesGrid.java
- * Copyright (C) Remi Even 2015
+ * Copyright (C) Remi Even 2015-2016
  *
  * This file is part of CyberNanites2000.
  *
@@ -27,12 +27,22 @@ public class NanitesGrid {
 
 	private final int width;
 	private final int height;
+	private final int widthOffset;
+	private final int heightOffset;
+	private final int originalWidth;
 	private final byte[] nanites;
 
 	public NanitesGrid(int width, int height) {
+		this(width, height, 1, 1, width, new byte[(width + 2) * (height + 2)]);
+	}
+
+	private NanitesGrid(int width, int height, int widthOffset, int heightOffset, int originalWidth, byte[] nanites) {
 		this.width = width;
 		this.height = height;
-		this.nanites = new byte[(width + 2) * (height + 2)];
+		this.widthOffset = widthOffset;
+		this.heightOffset = heightOffset;
+		this.originalWidth = originalWidth;
+		this.nanites = nanites;
 	}
 
 	public void initialize() {
@@ -73,10 +83,22 @@ public class NanitesGrid {
 		return neighborhood;
 	}
 
+	public NanitesGrid subgrid(int widthOffset, int heightOffset, int width, int height) {
+		assert widthOffset + width <= this.width;
+		assert heightOffset + height <= this.height;
+		return new NanitesGrid(
+				width,
+				height,
+				this.widthOffset + widthOffset,
+				this.heightOffset + heightOffset,
+				this.originalWidth,
+				nanites);
+	}
+
 	/**
 	 * @return the index corresponding to x (from left to right) and y (from top to bottom)
 	 */
 	private int indexOfCoordinates(int x, int y) {
-		return  1 + x + (width + 2) * (y + 1);
+		return  widthOffset + x + (originalWidth + 2) * (heightOffset + y);
 	}
 }
